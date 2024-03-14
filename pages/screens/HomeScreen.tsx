@@ -1,11 +1,11 @@
 import { View, Text } from 'react-native'
+import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-
-export default function SearchPage() {
+export default function HomeScreen() {
   return (
     <SafeAreaView>
-      <Text>SearchPage</Text>
+      <Text>HomeScreen</Text>
     </SafeAreaView>
   )
 }
