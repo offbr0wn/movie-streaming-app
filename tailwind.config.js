@@ -6,7 +6,20 @@ module.exports = {
     "./components/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        redAccent: "#DD0404",
+      },
+      fontFamily: {
+        AlexBold: ["Alexandria-Bold"],
+        AlexExtraBold: ["Alexandria-ExtraBold"],
+        AlexExtraLight: ["Alexandria-ExtraLight"],
+        AlexLight: ["Alexandria-Light"],
+        AlexMedium: ["Alexandria-Medium"],
+        AlexRegular: ["Alexandria-Regular"],
+        AlexSemiBold: ["Alexandria-SemiBold"],
+      },
+    },
   },
   plugins: [],
 };
