@@ -1,6 +1,10 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Platform } from "react-native";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaInsetsContext ,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import ClapperBoard from "../../assets/svg_icons/ClapperBoard";
 import { Dropdown } from "react-native-element-dropdown";
@@ -9,6 +13,7 @@ import { ICarouselInstance } from "react-native-reanimated-carousel";
 
 import HorizontalHomeCard from "../../components/HomeScreen/HorizontalHomeCard";
 import CarouselComponent from "../../components/HomeScreen/CarouselComponent";
+import TabNavigation from "../../navigators/TabNavigation";
 
 export default function HomeScreen() {
   const [value, setValue] = useState("Movies");
@@ -19,13 +24,20 @@ export default function HomeScreen() {
 
   const navigation = useNavigation();
   const ref = React.useRef<ICarouselInstance>(null);
+
+  const insets = useSafeAreaInsets();
+  console.log(insets);
   return (
-    <SafeAreaView className="bg-gray-800 h-full backdrop-blur-md backdrop-blur-sm flex-[1]   py-[20px] ">
+    <SafeAreaView
+      className={`bg-gray-800 pb-[60px] flex-1 `}
+      
+      
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-        className="space-y-[10px]"
-        scrollEnabled={true}
+        
+        className="space-y-[10px] flex-1"
+        // scrollEnabled={true}
       >
         {/* Top Header */}
         <View className="flex-row items-center justify-start space-x-[10px] px-[20px]">

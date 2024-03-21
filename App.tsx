@@ -1,23 +1,25 @@
 import { StatusBar } from "expo-status-bar";
-import HomeScreen from "./pages/screens/HomeScreen";
-import SearchPage from "./pages/screens/SearchPage";
-import MoviesPage from "./pages/screens/MoviesPage";
+
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity, View } from "react-native";
-import * as NavigationBar from "expo-navigation-bar";
-import { useCallback, useLayoutEffect } from "react";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import React, { useCallback, useLayoutEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import TabNavigator from "./navigators/TabNavigation";
 import TabNavigation from "./navigators/TabNavigation";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import "@tamagui/core/reset.css";
+import { TamaguiProvider } from "@tamagui/core";
+import { tamaguiConfig } from "../movie-streaming-app/tamagui.config";
+import { useColorScheme } from "react-native";
+
 export default function App() {
-  const Tab = createBottomTabNavigator();
-  const visibility = NavigationBar.useVisibility();
+  const colorScheme = useColorScheme();
   const [fontsLoaded] = useFonts({
     "Alexandria-Regular": require("./assets/fonts/Alexandria-Regular.ttf"),
     "Alexandria-Medium": require("./assets/fonts/Alexandria-Medium.ttf"),
@@ -39,19 +41,18 @@ export default function App() {
 
   if (!fontsLoaded) {
     return undefined;
-  } 
-  else {
+  } else {
     SplashScreen.hideAsync();
   }
 
   return (
-    // <View onLayout={handleOnLayout}>
-    <GestureHandlerRootView style={{ flex: 1 }}>
-    <NavigationContainer>
-      <StatusBar style="auto" />
-      <TabNavigation />
-    </NavigationContainer>
-     </GestureHandlerRootView>
-    // </View>
+    <GestureHandlerRootView style={{ flexGrow: 1 }}>
+      <SafeAreaProvider>
+        <StatusBar style="auto" />
+        <NavigationContainer>
+          <TabNavigation />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

@@ -2,7 +2,16 @@ import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { BlurView } from "expo-blur";
+import { Button } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
+interface NavigationParams {
+  screen: string;
+  params?: {
+    itemId: number;
+    otherParam: string;
+  };
+}
 export default function HorizontalHomeCard() {
   const DATA = [
     {
@@ -35,10 +44,16 @@ export default function HorizontalHomeCard() {
       title: "First Item",
     },
   ];
-
+  const navigation = useNavigation();
   const [isFlashListInUse, setIsFlashListInUse] = useState(false);
   const flashListRef = useRef(null);
-
+  const navigateParams: NavigationParams = {
+    screen: "SearchPage",
+    params: {
+      itemId: 86,
+      otherParam: "anything you want here",
+    },
+  };
   useEffect(() => {
     // Check if the FlashList is in use by checking if the ref is not null
     setIsFlashListInUse(false);
@@ -55,7 +70,12 @@ export default function HorizontalHomeCard() {
         <Text className="text-white text-[25px] font-AlexSemiBold ">
           Trending
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            /* 1. Navigate to the Details route with params */
+            navigation.navigate(navigateParams.screen, navigateParams.params);
+          }}
+        >
           <Text className="text-[#DD0404] text-[12px] font-AlexRegular ">
             View all
           </Text>
@@ -77,14 +97,23 @@ export default function HorizontalHomeCard() {
               onPress={() => {
                 console.log(item.title);
               }}
-              onLayout={handleInitialScroll}
+              // onLayout={handleInitialScroll}
             >
-              <View className="">
+              <View
+                className="shadow-md shadow-gray-700"
+                style={{
+                  shadowColor: "white",
+                  elevation: 10,
+                  shadowOffset: { width: 1000, height: 200 },
+                  shadowOpacity: 1,
+                  shadowRadius: 10,
+                }}
+              >
                 <ImageBackground
                   source={{ uri: item.image }}
                   style={{
-                    width: 150,
-                    height: 200,
+                    width: 120,
+                    height: 180,
                     shadowColor: "#0000",
                     shadowOffset: { width: 0, height: 10 },
                     shadowOpacity: 0.5,
@@ -96,18 +125,25 @@ export default function HorizontalHomeCard() {
                 >
                   <BlurView
                     intensity={80}
+                    tint="systemChromeMaterial"
                     style={{
                       position: "absolute",
                       height: "20%",
-                      width: "80%",
+                      // width: "80%",
                       borderRadius: 20,
                       overflow: "hidden",
-
+                      bottom: 0,
+                      left: 0, // Align text to the left
+                      right: 0,
                       justifyContent: "center",
                       alignItems: "center",
+                      shadowColor: "white",
+                      shadowOffset: { width: 1000, height: 200 },
+                      shadowOpacity: 1,
+                      shadowRadius: 10,
                     }}
                   >
-                    <Text className="text-white text-[15px] font-AlexLight">
+                    <Text className="text-white text-[18px] font-AlexLight">
                       {item.title}
                     </Text>
                   </BlurView>

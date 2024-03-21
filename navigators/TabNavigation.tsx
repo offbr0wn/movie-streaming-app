@@ -6,12 +6,15 @@ import MoviesPage from "../pages/screens/MoviesPage";
 import SearchPage from "../pages/screens/SearchPage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 export default function TabNavigation() {
+  const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
 
   const styles = StyleSheet.create({
     tabBarStyle: {
-      paddingBottom: 0,
+      // paddingBottom: 0,
       paddingTop: 5,
       position: "absolute",
       height: 60,
@@ -20,6 +23,7 @@ export default function TabNavigation() {
       elevation: 0,
       borderTopColor: "transparent",
       flex: 1,
+      // display: "none",
     },
   });
 
@@ -51,7 +55,9 @@ export default function TabNavigation() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        headerShown: false,
         tabBarStyle: styles.tabBarStyle,
+        tabBarHideOnKeyboard: true,
         tabBarIcon: ({ focused, color, size }) =>
           tabBarIconLogic({ route, focused, color, size }),
         tabBarButton: (props) => (
@@ -68,12 +74,12 @@ export default function TabNavigation() {
         ),
 
         tabBarLabelStyle: { display: "none" },
-        headerShown: false,
+
         tabBarActiveTintColor: "#DD0404",
         tabBarInactiveTintColor: "white",
         tabBarBackground: () => (
           <BlurView
-            intensity={0}
+            intensity={10}
             style={{ position: "absolute", height: "100%", width: "100%" }}
           />
         ),
