@@ -18,20 +18,21 @@ export default function CardComponent({ index, currentIndex }: CardIndex) {
   const height = Dimensions.get("window").height;
   const blurLogic = index === currentIndex ? 0 : 10;
   return (
-    <TouchableOpacity className="items-center  ">
+    <TouchableOpacity className="items-center">
       <ImageBackground
         source={{
           uri: "https://www.themoviedb.org/t/p/w1280/i6yYcZ5sGHHM2l6dIgt2nZov7Hh.jpg",
         }}
         style={{
-          width: width / 1.5,
-          height: height / 2.5,
+          width: width / 1.7,
+          height: height / 2.7,
           borderRadius: 60,
           overflow: "hidden",
-          shadowColor: "#FFFFFF",
-          shadowOffset: { width: 100, height: 50 },
+          shadowColor: "white",
+          shadowOffset: { width: 1000, height: 200 },
           shadowOpacity: 1,
           shadowRadius: 10,
+          elevation: 20,
         }}
         resizeMode="cover"
         blurRadius={blurLogic}
@@ -43,7 +44,6 @@ export default function CardComponent({ index, currentIndex }: CardIndex) {
             height: 45,
             position: "absolute",
             paddingVertical: 2,
-
             left: 20,
             top: 30,
             borderRadius: 20,
