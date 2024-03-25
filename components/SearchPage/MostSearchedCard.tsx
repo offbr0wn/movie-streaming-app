@@ -4,20 +4,21 @@ import { TouchableOpacity } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { BlurView } from "expo-blur";
 
-export const MostSearchedCardFlatList = ({ item }: { item: { image: string, title: string } }): JSX.Element => {
-  console.log(item);
-  return (
+export const MostSearchedCardFlatList = ({
+  item,
+}: {
+  item: { image: string; title: string };
+}): JSX.Element => {
+
+    return (
     <View
-      className="shadow-md shadow-gray-700  "
+      className="shadow-lg shadow-white  mx-auto"
       style={{
         shadowColor: "white",
         elevation: 10,
-        // shadowOffset: { width: 100, height: 200 },
+        shadowOffset: { width: 100, height: 200 },
         shadowOpacity: 0.5,
         shadowRadius: 10,
-    
-        
-        
       }}
     >
       <Image
@@ -26,18 +27,21 @@ export const MostSearchedCardFlatList = ({ item }: { item: { image: string, titl
           width: 120,
           height: 150,
           shadowColor: "white",
-          shadowOffset: { width:20, height: 0 },
+          shadowOffset: { width: 20, height: 0 },
           shadowOpacity: 0.5,
           shadowRadius: 10,
           borderRadius: 20,
           overflow: "hidden",
-          
-          
         }}
         resizeMode="stretch"
         className="px-[20px] "
-       
       />
+      <Text className="text-white font-AlexRegular text-[15px]  text-center pt-[5px] ">
+        {item.title}
+      </Text>
+      <Text className="text-white font-AlexLight text-[15px]  text-center ">
+        5.0
+      </Text>
     </View>
   );
 };
@@ -75,20 +79,18 @@ export default function MostSearchedCard() {
     },
   ];
   return (
-    <TouchableOpacity>
-      <FlashList
-        data={DATA}
-        renderItem={({ item }) => <MostSearchedCardFlatList item={item} />}
-        estimatedItemSize={200}
-        horizontal={false}
-        ItemSeparatorComponent={() => (
-          <View style={{height: 50, gap: 10}} />
-        )}
-        showsHorizontalScrollIndicator={false}
-        numColumns={3}
-        
-        
-      />
-    </TouchableOpacity>
+    <FlashList
+      data={DATA}
+      renderItem={({ item }) => (
+        <TouchableOpacity>
+          <MostSearchedCardFlatList item={item} />
+        </TouchableOpacity>
+      )}
+      estimatedItemSize={200}
+      horizontal={false}
+      ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+      showsHorizontalScrollIndicator={false}
+      numColumns={3}
+    />
   );
 }

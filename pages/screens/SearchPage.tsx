@@ -1,23 +1,45 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SearchBar } from "@rneui/themed";
 import { useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import DekuImage from "../../assets/svg_icons/DekuImage";
-import SpidermanImage from "../../assets/svg_icons/SpidermanImage";
-import HorizontalHomeCard from "../../components/HomeScreen/HorizontalHomeCard";
+import { useDebouncedCallback } from "use-debounce";
 import MostSearchedCard from "../../components/SearchPage/MostSearchedCard";
-export default function SearchPage({
-  route,
-}: {
-  route: { params?: { otherParam?: string } };
-}) {
+import SpidermanImage from "../../assets/svg_icons/SpidermanImage";
+import DekuImage from "../../assets/svg_icons/DekuImage";
+
+
+export default function SearchPage() {
   const [search, setSearch] = useState("");
 
   const searchResult = useRef();
 
+  const debounced = useDebouncedCallback(
+    // function
+    (value) => {
+      console.log(value);
+    },
+
+    1000
+  );
+
+  const handleInputChange = (
+    event: NativeSyntheticEvent<TextInputChangeEventData> | undefined
+  ) => {
+    if (event?.nativeEvent?.text) {
+      setSearch(event.nativeEvent.text);
+      debounced(event?.nativeEvent?.text);
+    }
+  };
   const handleSearch = () => {
-    searchResult?.current?.blur();
+    searchResult;
   };
   return (
     <SafeAreaView className="flex-1 pt-[40px]  bg-gray-800">
@@ -47,51 +69,52 @@ export default function SearchPage({
           />
           <SearchBar
             placeholder="Search for a content..."
-            onChangeText={(event) => setSearch(event)}
+            onChange={handleInputChange}
             value={search}
             showLoading={false}
             searchIcon={false}
             containerStyle={{
               borderRadius: 24,
             }}
-            onClear={() => console.log("clear")}
-            ref={searchResult}
+            // onClear={() => console.log("clear")}
+            // ref={searchResult}
           />
         </View>
 
         {/* Movies / TV Shows Image  */}
-        <View className=" items-start self-start   space-x-[-2px] pt-[20px]">
-          <Text className="text-[20px] text-white font-AlexRegular px-[20px]">
-            Catagories
-          </Text>
-          <View className="flex-row ">
-            <TouchableOpacity onPress={handleSearch}>
-              <View className=" items-center">
-                <SpidermanImage />
-                <Text className="absolute top-[30%] right-10  text-white font-AlexRegular">
-                  Movies
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-            <View className="relative items-center">
-            <DekuImage />
-            <Text className="absolute top-[30%]   text-white font-AlexRegular">
-              TV Shows
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View className=" items-start  space-x-[-2px]  pt-[20px]">
+            <Text className="text-[20px] text-white font-AlexRegular px-[20px]">
+              Catagories
             </Text>
-             
-              </View>
-            </TouchableOpacity>
+            <View className="flex-row  ">
+              <TouchableOpacity onPress={handleSearch}>
+                <View>
+                  <SpidermanImage />
+                  <Text className="absolute top-[30%] right-10  text-white font-AlexRegular">
+                    Movies
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <View className="relative items-center">
+                  <DekuImage />
+                  <Text className="absolute top-[30%]   text-white font-AlexRegular">
+                    TV Shows
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
 
-        {/* Most searched section  */}
-        <ScrollView className="flex-1 px-[20px] space-y-[10px]">
-          <Text className="text-[20px] text-white font-AlexRegular">
-            Most Searched
-          </Text>
+          {/* Most searched section  */}
+          <View className="flex-1 px-[20px] space-y-[10px]">
+            <Text className="text-[20px] text-white font-AlexRegular">
+              Most Searched
+            </Text>
 
-          <MostSearchedCard/>
+            <MostSearchedCard />
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>

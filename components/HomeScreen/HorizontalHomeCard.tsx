@@ -48,7 +48,7 @@ export default function HorizontalHomeCard() {
   const [isFlashListInUse, setIsFlashListInUse] = useState(false);
   const flashListRef = useRef(null);
   const navigateParams: NavigationParams = {
-    screen: "SearchPage",
+    screen: "Movie/Shows",
     params: {
       itemId: 86,
       otherParam: "anything you want here",
@@ -94,9 +94,9 @@ export default function HorizontalHomeCard() {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => {
-                console.log(item.title);
-              }}
+              // onPress={() => {
+              //   console.log(item.title);
+              // }}
               // onLayout={handleInitialScroll}
             >
               <View

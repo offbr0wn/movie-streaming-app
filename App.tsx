@@ -1,22 +1,15 @@
 import { StatusBar } from "expo-status-bar";
 
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import React, { useCallback, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import TabNavigation from "./navigators/TabNavigation";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import "@tamagui/core/reset.css";
-import { TamaguiProvider } from "@tamagui/core";
-import { tamaguiConfig } from "../movie-streaming-app/tamagui.config";
 import { useColorScheme } from "react-native";
+import ScreenNavigation from "./navigators/ScreenNavigation";
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -50,7 +43,7 @@ export default function App() {
       <SafeAreaProvider>
         <StatusBar style="auto" />
         <NavigationContainer>
-          <TabNavigation />
+          <ScreenNavigation />
         </NavigationContainer>
       </SafeAreaProvider>
     </GestureHandlerRootView>
