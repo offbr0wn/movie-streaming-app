@@ -10,10 +10,9 @@ import { SearchBar } from "@rneui/themed";
 import React, { useRef, useState } from "react";
 import { ClearButton } from "../../ui/ClearButton";
 import { useDebouncedCallback } from "use-debounce";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import { TabView, TabBar } from "react-native-tab-view";
 import { MasonryFlashList } from "@shopify/flash-list";
 import MasonryMovieList from "../../components/MoviesPage/MasonryMovieList";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
 export default function MoviesPage() {
@@ -21,7 +20,7 @@ export default function MoviesPage() {
   const searchResult = useRef();
   const [index, setIndex] = useState(0);
   const layout = useWindowDimensions();
-  const navigation = useNavigation();
+ 
 
   const [routes] = useState([
     { key: "first", title: "Latest" },
@@ -47,10 +46,13 @@ export default function MoviesPage() {
     if (event?.nativeEvent?.text) {
       setSearch(event.nativeEvent.text);
       debounced(event?.nativeEvent?.text);
+      
     }
   };
 
-  const renderScene = ({ route, jumpTo }) => {
+
+
+  const renderScene = ({ route }) => {
     switch (route.key) {
       case "first":
         return <FirstRoute />;
@@ -92,15 +94,16 @@ export default function MoviesPage() {
       },
     ];
 
+
     return (
-      <View className="flex-1 pt-[20px] pb-[40px]">
+      <View className="flex-1 pt-[20px] ">
         <MasonryFlashList
           data={DATA}
           numColumns={2}
           renderItem={({ item, index }) => (
             <MasonryMovieList item={item} index={index} />
           )}
-          estimatedItemSize={200}
+          estimatedItemSize={50}
           showsVerticalScrollIndicator={false}
         />
       </View>
@@ -108,20 +111,25 @@ export default function MoviesPage() {
   };
 
   return (
-    <SafeAreaView className=" px-[20px] pt-[30px]  flex-1 bg-gray-800">
-      <View className="flex-1  space-y-[20px]">
+    <SafeAreaView className=" px-[20px] pt-[30px]   flex-1 bg-gray-800">
+      <View className="flex-1  space-y-[20px] ">
         <Text className="text-white font-AlexMedium text-[18px]">
           Find Movies, Tv series, and more..
         </Text>
         {/* Transparent Buttons */}
         <View className="flex-row  ">
-          <ClearButton name="Movies" />
+          <ClearButton name="Movies" fontSize={"12"} fontFamily={"AlexBold"} />
           <View style={{ width: 20 }} />
-          <ClearButton name="Tv Series" />
+          <ClearButton
+            name="Tv Series"
+            fontSize={"12"}
+            fontFamily={"AlexBold"}
+          />
         </View>
         {/* Search Bar */}
-        <View className="w-full ">
+        <View className="w-full " >
           <SearchBar
+            
             placeholder="Type Here..."
             onChange={handleInputChange}
             value={search}
@@ -140,11 +148,10 @@ export default function MoviesPage() {
               borderWidth: 0,
               height: 20,
             }}
-            onBlur={() => SearchBar.blur()}
           />
         </View>
         {/* Tabs to switch between movies and tv */}
-        <View className=" flex-1 h-full ">
+        <View className=" flex-1">
           <TabView
             lazy
             // animationEnabled  = {false}
@@ -196,23 +203,21 @@ const SecondRoute = () => {
   ];
 
   return (
-    <View className="flex-1 py-[20px]">
-      <MasonryFlashList
-        data={DATA}
-        numColumns={2}
-        renderItem={({ item, index }) => (
-          <MasonryMovieList item={item} index={index} />
-        )}
-        estimatedItemSize={200}
-        // optimizeItemArrangement={true}
-        // overrideItemLayout={(props) => {
-        //   console.log(props);
-        // }}
-        // disableAutoLayout = {true}
-        refreshing={false}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    <MasonryFlashList
+      data={DATA}
+      numColumns={2}
+      renderItem={({ item, index }) => (
+        <MasonryMovieList item={item} index={index} />
+      )}
+      estimatedItemSize={200}
+      // optimizeItemArrangement={true}
+      // overrideItemLayout={(props) => {
+      //   console.log(props);
+      // }}
+      // disableAutoLayout = {true}
+      refreshing={false}
+      showsVerticalScrollIndicator={false}
+    />
   );
 };
 

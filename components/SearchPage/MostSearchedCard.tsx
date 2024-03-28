@@ -9,37 +9,27 @@ export const MostSearchedCardFlatList = ({
 }: {
   item: { image: string; title: string };
 }): JSX.Element => {
-
-    return (
-    <View
-      className="shadow-lg shadow-white  mx-auto"
-      style={{
-        shadowColor: "white",
-        elevation: 10,
-        shadowOffset: { width: 100, height: 200 },
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
-      }}
-    >
+  return (
+    <View>
       <Image
         source={{ uri: item.image }}
         style={{
-          width: 120,
-          height: 150,
+          width: 110,
+          height: 140,
           shadowColor: "white",
           shadowOffset: { width: 20, height: 0 },
           shadowOpacity: 0.5,
           shadowRadius: 10,
           borderRadius: 20,
           overflow: "hidden",
+          // marginHorizontal:"auto"
         }}
         resizeMode="stretch"
-        className="px-[20px] "
       />
-      <Text className="text-white font-AlexRegular text-[15px]  text-center pt-[5px] ">
+      <Text className="text-white font-AlexRegular text-[16px]  text-center pt-[2px] ">
         {item.title}
       </Text>
-      <Text className="text-white font-AlexLight text-[15px]  text-center ">
+      <Text className="text-white font-AlexLight text-[14px]  text-center ">
         5.0
       </Text>
     </View>
@@ -86,9 +76,9 @@ export default function MostSearchedCard() {
           <MostSearchedCardFlatList item={item} />
         </TouchableOpacity>
       )}
-      estimatedItemSize={200}
+      estimatedItemSize={20}
       horizontal={false}
-      ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+      ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
       showsHorizontalScrollIndicator={false}
       numColumns={3}
     />

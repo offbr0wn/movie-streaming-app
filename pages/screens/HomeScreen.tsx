@@ -22,7 +22,6 @@ function HomeScreen({ navigation }: any) {
   const navigateToAboutMovieScreen = () => {
     navigation.navigate("AboutMovieScreen");
   };
-console.log(navigation)
   return (
     <SafeAreaView className={`bg-gray-800  flex-1 `}>
       <View className="flex-1 ">
@@ -89,7 +88,7 @@ console.log(navigation)
                     label: string;
                     value: string;
                   }): void {
-                    console.log(item);
+                    console.log("HomeScreen.tsx");
                   }}
                   labelField="label"
                   valueField="value"
