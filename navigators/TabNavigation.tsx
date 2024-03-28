@@ -18,7 +18,7 @@ export default function TabNavigation() {
       // paddingBottom: 0,
       paddingTop: 5,
       position: "absolute",
-      height: 70,
+      height: 80,
       backgroundColor: "none",
       borderTopWidth: 0,
       elevation: 0,

@@ -8,11 +8,9 @@ import {
 import React from "react";
 import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
+import { CardIndex } from "../../types/interface";
 
-interface CardIndex {
-  index: number;
-  currentIndex: number;
-}
+
 export default function CardComponent({ index, currentIndex }: CardIndex) {
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;

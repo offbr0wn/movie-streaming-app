@@ -90,24 +90,24 @@ export default function HorizontalHomeCard() {
           ref={flashListRef}
           data={DATA}
           horizontal={true}
-          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity
-              // onPress={() => {
-              //   console.log(item.title);
-              // }}
-              // onLayout={handleInitialScroll}
+            // onPress={() => {
+            //   console.log(item.title);
+            // }}
+            // onLayout={handleInitialScroll}
             >
               <View
-                className="shadow-md shadow-gray-700"
-                style={{
-                  shadowColor: "white",
-                  elevation: 10,
-                  shadowOffset: { width: 1000, height: 200 },
-                  shadowOpacity: 1,
-                  shadowRadius: 10,
-                }}
+                // className="shadow-md shadow-gray-700"
+                // style={{
+                //   shadowColor: "white",
+                //   elevation: 10,
+                //   shadowOffset: { width: 1000, height: 200 },
+                //   shadowOpacity: 1,
+                //   shadowRadius: 10,
+                // }}
               >
                 <ImageBackground
                   source={{ uri: item.image }}
@@ -120,33 +120,33 @@ export default function HorizontalHomeCard() {
                     shadowRadius: 10,
                     borderRadius: 20,
                     overflow: "hidden",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    elevation: 10,
                   }}
                   resizeMode="cover"
                 >
                   <BlurView
-                    intensity={80}
-                    tint="systemChromeMaterial"
+                    intensity={70}
+                    tint="systemThinMaterialLight"
                     style={{
-                      position: "absolute",
                       height: "20%",
                       // width: "80%",
                       borderRadius: 20,
                       overflow: "hidden",
-                      bottom: 0,
-                      left: 0, // Align text to the left
-                      right: 0,
-                      justifyContent: "center",
-                      alignItems: "center",
+                      width: "100%",
+                   
+                      
+
                       shadowColor: "white",
-                      shadowOffset: { width: 1000, height: 200 },
+                      // shadowOffset: { width: 1000, height: 200 },
                       shadowOpacity: 1,
                       shadowRadius: 10,
                     }}
-                  >
-                    <Text className="text-white text-[18px] font-AlexLight">
-                      {item.title}
-                    </Text>
-                  </BlurView>
+                  />
+                  <Text className="text-white text-[16px]  font-AlexRegular absolute">
+                    {item.title}
+                  </Text>
                 </ImageBackground>
               </View>
             </TouchableOpacity>

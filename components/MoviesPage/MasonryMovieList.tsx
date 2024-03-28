@@ -7,7 +7,7 @@ export default function MasonryMovieList({ item, index }) {
   const navigation = useNavigation();
 
   const even = index % 2 === 0;
-  const cardHard = index % 3 === 0 ? 180 : 230;
+  const cardHard = index % 3 === 0 ? 200 : 250;
 
   return (
     <TouchableOpacity
@@ -15,7 +15,7 @@ export default function MasonryMovieList({ item, index }) {
     >
       <Animated.View
         entering={FadeInDown.delay(index < 6 ? index * 80 : 0)}
-        className={`pl-${!even ? 2 : 0}  pr-${even ? 2 : 0} pb-[20px] `}
+        className={`pl-${!even ? 2 : 0}  pr-${even ? 2 : 0} pb-[30px] `}
       >
         <Image
           source={{ uri: item.image }}
@@ -28,7 +28,7 @@ export default function MasonryMovieList({ item, index }) {
           }}
         />
 
-        <Text className="text-white text-[15px] font-AlexBold py-[12px] text-left pl-2 ">
+        <Text className="text-white text-[15px] font-AlexBold py-[5px] text-left pl-2 ">
           {item.title}&nbsp;
           <Text className=" font-AlexRegular">(2020)</Text>
         </Text>
