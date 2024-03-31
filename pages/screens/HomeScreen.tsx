@@ -8,20 +8,44 @@ import { Ionicons } from "@expo/vector-icons";
 import ClapperBoard from "../../assets/svg_icons/ClapperBoard";
 import { Dropdown } from "react-native-element-dropdown";
 import { ICarouselInstance } from "react-native-reanimated-carousel";
-
 import HorizontalHomeCard from "../../components/HomeScreen/HorizontalHomeCard";
 import CarouselComponent from "../../components/HomeScreen/CarouselComponent";
-function HomeScreen({ navigation }: any) {
+import { Navigation } from "../../types/interface";
+import {
+  useGetDiscoverMovieQuery,
+  useGetDiscoverQuery,
+  useGetNowTopAiringQuery,
+} from "../../redux/api/api";
+import LoadingScreen from "../../utils/LoadingScreen";
+import { ImageApiUrl } from "../../utils/ImageApiUrl";
+//ignore tslint error
+function HomeScreen({ navigation }: Navigation) {
   const [value, setValue] = useState("Movies");
   const [items, setItems] = useState([
     { label: "Movies", value: "movies" },
     { label: "TV Show", value: "tvShows" },
   ]);
+
+  // const {
+  //   data: { results } = [],
+  //   error,
+  //   isLoading,
+  // } = useGetDiscoverMovieQuery("");
   const ref = React.useRef<ICarouselInstance>(null);
+  const {
+    data : { results } = [],
+    isLoading,
+  } = useGetDiscoverQuery("movie")
 
   const navigateToAboutMovieScreen = () => {
-    navigation.navigate("AboutMovieScreen");
+    navigation.navigate("LoadingScreen");
   };
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  // console.log(ImageApiUrl(data?.results[0]?.poster_path));
   return (
     <SafeAreaView className={`bg-gray-800  flex-1 `}>
       <View className="flex-1 ">
@@ -105,7 +129,7 @@ function HomeScreen({ navigation }: any) {
           </View>
           {/* Carousel section */}
           <View className="pb-[70px]">
-            <CarouselComponent />
+            <CarouselComponent data={results} />
             {/* Trending Now Section */}
             <HorizontalHomeCard />
             {/* Popular */}

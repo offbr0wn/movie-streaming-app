@@ -242,7 +242,7 @@ export default function AboutMovieScreen({ navigation }: Navigation) {
               </Text>
 
               <View className="flex-row flex-wrap  ">
-                {Array(10)
+                {Array(5)
                   .fill(null)
                   .map((_, index) => (
                     <View

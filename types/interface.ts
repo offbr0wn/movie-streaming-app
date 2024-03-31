@@ -13,8 +13,21 @@ export interface ClearButtonProps extends ButtonProps {
   fontFamily: string;
 }
 
+export interface MovieItem {
+  backdrop_path: string;
+
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
 export interface CardIndex {
   index: number;
   currentIndex: number;
+  item: MovieItem;
 }
-

@@ -56,8 +56,9 @@ export default function HorizontalHomeCard() {
   };
   useEffect(() => {
     // Check if the FlashList is in use by checking if the ref is not null
+    
     setIsFlashListInUse(false);
-  }, [flashListRef]);
+  }, []);
 
   const handleInitialScroll = () => {
     // console.log("Initial scroll detected");
