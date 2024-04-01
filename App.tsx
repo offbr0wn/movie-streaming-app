@@ -1,17 +1,16 @@
 import { StatusBar } from "expo-status-bar";
-
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect, useLayoutEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import TabNavigation from "./navigators/TabNavigation";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { useColorScheme } from "react-native";
 import ScreenNavigation from "./navigators/ScreenNavigation";
 import BottomNavBar from "./utils/BottomNavBar";
 import * as NavigationBar from "expo-navigation-bar";
+import { Provider } from "react-redux";
+import { store } from "./redux/selectors/store";
 
 export default function App() {
   const visibility = NavigationBar.useVisibility();
@@ -27,7 +26,6 @@ export default function App() {
     "Alexandria-Bold": require("./assets/fonts/Alexandria-Bold.ttf"),
   });
 
-  console.log(visibility);
   useEffect(() => {
     if (visibility === "visible" || visibility === null) {
       BottomNavBar();
@@ -37,9 +35,8 @@ export default function App() {
   useLayoutEffect(() => {
     async function handleOnLayout() {
       await SplashScreen.preventAutoHideAsync();
-      setTimeout(SplashScreen.hideAsync, 5000);
+      // setTimeout(SplashScreen.hideAsync, 5000);
     }
-
     handleOnLayout();
   }, []);
 
@@ -50,13 +47,15 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flexGrow: 1 }}>
-      <SafeAreaProvider>
-        <StatusBar style="auto" />
-        <NavigationContainer>
-          <ScreenNavigation />
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <GestureHandlerRootView style={{ flexGrow: 1 }}>
+        <SafeAreaProvider>
+          <StatusBar style="auto" />
+          <NavigationContainer>
+            <ScreenNavigation />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    </Provider>
   );
 }

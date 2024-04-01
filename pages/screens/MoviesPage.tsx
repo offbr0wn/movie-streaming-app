@@ -61,54 +61,6 @@ export default function MoviesPage() {
     }
   };
 
-  const FirstRoute = () => {
-    const DATA = [
-      {
-        image:
-          "https://www.themoviedb.org/t/p/w1280/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
-        title: "First Item",
-      },
-      {
-        image:
-          "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
-
-        title: "Second Item",
-      },
-      {
-        image:
-          "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-        title: "First Item",
-      },
-      {
-        image:
-          "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
-
-        title: "Second Item",
-      },
-      {
-        image:
-          "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-        title: "First Item",
-      },
-    ];
-
-
-    return (
-      <View className="flex-1 pt-[20px] ">
-        <MasonryFlashList
-          data={DATA}
-          numColumns={2}
-          renderItem={({ item, index }) => (
-            <MasonryMovieList item={item} index={index} />
-          )}
-          estimatedItemSize={50}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-    );
-  };
 
   return (
     <SafeAreaView className=" px-[20px] pt-[30px]   flex-1 bg-gray-800">
@@ -168,6 +120,56 @@ export default function MoviesPage() {
     </SafeAreaView>
   );
 }
+
+
+const FirstRoute = () => {
+  const DATA = [
+    {
+      image:
+        "https://www.themoviedb.org/t/p/w1280/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
+      title: "First Item",
+    },
+    {
+      image:
+        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
+
+      title: "Second Item",
+    },
+    {
+      image:
+        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
+
+      title: "First Item",
+    },
+    {
+      image:
+        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
+
+      title: "Second Item",
+    },
+    {
+      image:
+        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
+
+      title: "First Item",
+    },
+  ];
+
+
+  return (
+    <View className="flex-1 pt-[20px] ">
+      <MasonryFlashList
+        data={DATA}
+        numColumns={2}
+        renderItem={({ item, index }) => (
+          <MasonryMovieList item={item} index={index} />
+        )}
+        estimatedItemSize={50}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
+  );
+};
 
 const SecondRoute = () => {
   const DATA = [
