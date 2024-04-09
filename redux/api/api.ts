@@ -10,7 +10,11 @@ export const api = createApi({
   refetchOnReconnect: true,
   endpoints: (builder) => ({
     getDiscover: builder.query({
-      query: (type) => `/discover/${type}`,
+      query: (type) =>
+        `/discover/${type}?&language=en-US`,
+    }),
+    getTopRated: builder.query({
+      query: (type) => `/${type}/top_rated`,
     }),
     getTrending: builder.query({
       query: (type) => `/trending/${type}/day`,
@@ -20,6 +24,15 @@ export const api = createApi({
     }),
     getNowTopAiring: builder.query({
       query: ({ type, page }) => `/${type}/${page}`,
+    }),
+    getDetails: builder.query({
+      query: ({ type, id }) => `/${type}/${id}`,
+    }),
+    getCredits: builder.query({
+      query: ({ type, id }) => `/${type}/${id}/credits`,
+    }),
+    getSimilar: builder.query({
+      query: ({ type, id }) => `/${type}/${id}/similar?language=en-US&page=1`,
     }),
   }),
 });
@@ -31,4 +44,8 @@ export const {
   useGetTrendingQuery,
   useGetPopularQuery,
   useGetNowTopAiringQuery,
+  useGetDetailsQuery,
+  useGetCreditsQuery,
+  useGetTopRatedQuery,
+  useGetSimilarQuery,
 } = api;

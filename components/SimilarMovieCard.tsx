@@ -2,98 +2,84 @@ import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 import React from "react";
 import { FlashList } from "@shopify/flash-list";
 import { BlurView } from "expo-blur";
+import { useGetSimilarQuery } from "../redux/api/api";
+import { ImageApiUrl } from "../utils/ImageApiUrl";
+import LoadingScreen from "../utils/LoadingScreen";
+import { Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from "react-redux";
 
-export default function SimilarMovieCard() {
-  const DATA = [
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
-      title: "First Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
+interface SimilarMovieCardProps {
+  movieId: number;
+}
 
-      title: "Second Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
+export default function SimilarMovieCard({ movieId }: SimilarMovieCardProps) {
+  const navigation = useNavigation()
+  const selectDropDownValue = useSelector(
+    (state) => state?.dropDown?.dropDownValue
+  );
+  const { data: similarMovies } = useGetSimilarQuery({
+    type: selectDropDownValue,
+    id: movieId,
+  });
 
-      title: "First Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
+  const width = 150;
+  const height = 200;
 
-      title: "Second Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-      title: "First Item",
-    },
-  ];
   return (
-    <View>
+    <View className="flex-row  w-full h-full ">
       <FlashList
         //   ref={flashListRef}
-        data={DATA}
+        data={similarMovies?.results}
         horizontal={true}
-        ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
+        ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <TouchableOpacity>
-            <View
-              className="shadow-md shadow-gray-700"
+        estimatedItemSize={20}
+        estimatedListSize={{ width: width, height: height }}
+        renderItem={({
+          item,
+        }: {
+          item: { title?: string; poster_path: string; id: number, original_name?: string };
+        }) => (
+          <TouchableOpacity onPress={() => navigation.navigate('AboutMovieScreen', { itemId: item.id })}>
+            <ImageBackground
+              source={{ uri: ImageApiUrl(item?.poster_path) }}
               style={{
-                shadowColor: "white",
-                elevation: 10,
-                shadowOffset: { width: 1000, height: 200 },
-                shadowOpacity: 1,
+                width: width,
+                height: height,
+                shadowColor: "#0000",
+                shadowOffset: { width: 0, height: 10 },
+                shadowOpacity: 0.5,
                 shadowRadius: 10,
+                borderRadius: 20,
+                elevation: 10,
+                overflow: "hidden",
+                alignItems: "center",
+                justifyContent: "center",
               }}
+              resizeMode="cover"
             >
-              <ImageBackground
-                source={{ uri: item.image }}
+              <BlurView
+                intensity={80}
+                tint="systemThinMaterialLight"
                 style={{
-                  width: 120,
-                  height: 180,
-                  shadowColor: "#0000",
-                  shadowOffset: { width: 0, height: 10 },
-                  shadowOpacity: 0.5,
-                  shadowRadius: 10,
+                  // width: "80%",
                   borderRadius: 20,
                   overflow: "hidden",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
+                  width: "100%",
+                  height: "20%",
+                  shadowColor: "white",
+                  // shadowOffset: { width: 1000, height: 200 },
+                  shadowOpacity: 1,
+                  shadowRadius: 10,
                 }}
-                resizeMode="cover"
-              >
-                <BlurView
-                  intensity={70}
-                  tint="systemThinMaterialLight"
-                  style={{
-                    height: "20%",
-                    // width: "80%",
-                    borderRadius: 20,
-                    overflow: "hidden",
-
-                    shadowColor: "white",
-                    // shadowOffset: { width: 1000, height: 200 },
-                    shadowOpacity: 1,
-                    shadowRadius: 10,
-                  }}
-                />
-                <Text className="text-white text-[18px]  font-AlexLight absolute">
-                  {item.title}
-                </Text>
-              </ImageBackground>
-            </View>
+              />
+              <Text className="text-white text-[12px]  font-AlexLight absolute">
+                {item?.title ?? item?.original_name}
+              </Text>
+            </ImageBackground>
           </TouchableOpacity>
         )}
-        estimatedItemSize={10}
       />
     </View>
   );

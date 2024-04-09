@@ -14,13 +14,18 @@ import { TabView, TabBar } from "react-native-tab-view";
 import { MasonryFlashList } from "@shopify/flash-list";
 import MasonryMovieList from "../../components/MoviesPage/MasonryMovieList";
 import { useNavigation } from "@react-navigation/native";
+import { useGetTopRatedQuery } from "../../redux/api/api";
+import LoadingScreen from "../../utils/LoadingScreen";
+import { FirstRoute } from "../../components/MoviesPage/FirstRoute";
 
-export default function MoviesPage() {
+export default function MoviesPage({ navigation, route }) {
   const [search, setSearch] = useState("");
   const searchResult = useRef();
   const [index, setIndex] = useState(0);
   const layout = useWindowDimensions();
- 
+  const [buttonType, setButtonType] = useState("movie");
+  const { params } = route;
+  const { data: topRated, isLoading } = useGetTopRatedQuery(buttonType);
 
   const [routes] = useState([
     { key: "first", title: "Latest" },
@@ -46,21 +51,21 @@ export default function MoviesPage() {
     if (event?.nativeEvent?.text) {
       setSearch(event.nativeEvent.text);
       debounced(event?.nativeEvent?.text);
-      
     }
   };
-
-
 
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "first":
-        return <FirstRoute />;
+        return <FirstRoute topRated={topRated} />;
       case "second":
         return console.log("second");
     }
   };
 
+  if (isLoading) {
+    <LoadingScreen />;
+  }
 
   return (
     <SafeAreaView className=" px-[20px] pt-[30px]   flex-1 bg-gray-800">
@@ -70,18 +75,23 @@ export default function MoviesPage() {
         </Text>
         {/* Transparent Buttons */}
         <View className="flex-row  ">
-          <ClearButton name="Movies" fontSize={"12"} fontFamily={"AlexBold"} />
+          <ClearButton
+            name="Movies"
+            fontSize={"12"}
+            fontFamily={"AlexBold"}
+            onPress={() => setButtonType("movie")}
+          />
           <View style={{ width: 20 }} />
           <ClearButton
             name="Tv Series"
             fontSize={"12"}
             fontFamily={"AlexBold"}
+            onPress={() => setButtonType("tv")}
           />
         </View>
         {/* Search Bar */}
-        <View className="w-full " >
+        <View className="w-full ">
           <SearchBar
-            
             placeholder="Type Here..."
             onChange={handleInputChange}
             value={search}
@@ -120,56 +130,6 @@ export default function MoviesPage() {
     </SafeAreaView>
   );
 }
-
-
-const FirstRoute = () => {
-  const DATA = [
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
-      title: "First Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
-
-      title: "Second Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-      title: "First Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
-
-      title: "Second Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-      title: "First Item",
-    },
-  ];
-
-
-  return (
-    <View className="flex-1 pt-[20px] ">
-      <MasonryFlashList
-        data={DATA}
-        numColumns={2}
-        renderItem={({ item, index }) => (
-          <MasonryMovieList item={item} index={index} />
-        )}
-        estimatedItemSize={50}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-  );
-};
 
 const SecondRoute = () => {
   const DATA = [

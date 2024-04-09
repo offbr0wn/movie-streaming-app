@@ -20,17 +20,36 @@ import Animated, {
 
 import { ClearButton } from "../../ui/ClearButton";
 import { Button, Divider } from "@rneui/themed";
-import { Navigation } from "../../types/interface";
+import { CastItem, Navigation } from "../../types/interface";
 // @ts-ignore
 import CastCard from "../../ui/CastCard";
 import Rating from "../../ui/Rating";
 import SimilarMovieCard from "../../components/SimilarMovieCard";
-export default function AboutMovieScreen({ navigation }: Navigation) {
+import { useGetCreditsQuery, useGetDetailsQuery } from "../../redux/api/api";
+import { ImageApiUrl } from "../../utils/ImageApiUrl";
+import LoadingScreen from "../../utils/LoadingScreen";
+import { useSelector } from "react-redux";
+export default function AboutMovieScreen({ navigation, route }: Navigation) {
   const topMargin = Platform.OS === "ios" ? "" : "mt-2";
   const height = Math.round(Dimensions.get("window").height);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
   const IMG_HEIGHT = height / 1.6;
+  const moment = require("moment");
+  const { params } = route;
+
+  const selectDropDownValue = useSelector(
+    (state) => state?.dropDown?.dropDownValue
+  );
+  const { data: details, isLoading } = useGetDetailsQuery({
+    type: selectDropDownValue,
+    id: params?.itemId,
+  });
+
+  const { data: credits } = useGetCreditsQuery({
+    type: selectDropDownValue,
+    id: params?.itemId,
+  });
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -52,6 +71,11 @@ export default function AboutMovieScreen({ navigation }: Navigation) {
       ],
     };
   });
+
+  if (isLoading) {
+    <LoadingScreen />;
+  }
+
 
   return (
     <View className="flex-1 bg-gray-800">
@@ -83,7 +107,7 @@ export default function AboutMovieScreen({ navigation }: Navigation) {
 
         <Animated.Image
           source={{
-            uri: "https://www.themoviedb.org/t/p/w1280/8IB2e4r4oVhHnANbnm7O3Tj6tF8.jpg",
+            uri: ImageApiUrl(details?.backdrop_path),
           }}
           resizeMode="cover"
           className="w-full "
@@ -106,24 +130,24 @@ export default function AboutMovieScreen({ navigation }: Navigation) {
         {/* Movie Titles */}
         <View className="items-center absolute bottom-[71%] z-50  px-[20px] flex-row  justify-between w-full">
           <View className="self-start ">
-            <View className="flex-row space-x-3 space-y-2 ">
+            <View className="flex-row space-x-3 space-y-2  w-[70%]">
               <Text className="text-white text-[30px] font-AlexExtraBold    ">
-                The Batman
+                {details?.original_title ?? details?.name}
               </Text>
               <Text className="text-[#848484] font-AlexRegular text-[12px] self-center">
-                2020
+                {details?.release_date?.split("-")[0] ?? details?.first_air_date?.split("-")[0]}
               </Text>
             </View>
 
             <View className=" ">
               <Text className="text-[#848484] font-AlexRegular text-[16px] self-start ">
-                DCU
+                {details?.production_companies[0].name}
               </Text>
             </View>
           </View>
 
           <View className="self-center ">
-            <Rating />
+            <Rating rating={details?.vote_average} />
           </View>
         </View>
 
@@ -162,40 +186,30 @@ export default function AboutMovieScreen({ navigation }: Navigation) {
                   Release Date
                 </Text>
                 <Text className="text-[12px] text-white font-AlexLight">
-                  December 9, 2017
+                  {moment(details?.release_date).format("dddd, MMM D YYYY")}
                 </Text>
               </View>
               <View>
                 <Text className="text-[20px] text-white font-AlexRegular">
                   Genre
                 </Text>
-                <View className="flex-row space-x-4">
-                  <View>
-                    <ClearButton
-                      name="Action"
-                      style={{
-                        borderColor: "rgb(100 116 139)",
-                        borderWidth: 0.5,
-                        borderRadius: 10,
-                        width: 60,
-                      }}
-                      fontSize={"12px"}
-                      fontFamily={"AlexRegular"}
-                    />
-                  </View>
-                  <View>
-                    <ClearButton
-                      name="Sci-fi"
-                      style={{
-                        borderColor: "rgb(100 116 139)",
-                        borderWidth: 0.5,
-                        borderRadius: 10,
-                        width: 60,
-                      }}
-                      fontSize={"12px"}
-                      fontFamily={"AlexRegular"}
-                    />
-                  </View>
+                <View className="flex-row">
+                  {details?.genres.map(
+                    (genre: { id: number; name: string }) => (
+                      <ClearButton
+                        key={genre.id}
+                        name={genre.name}
+                        style={{
+                          borderColor: "rgb(100 116 139)",
+                          borderWidth: 0.5,
+                          borderRadius: 10,
+                          width: 60,
+                        }}
+                        fontSize={"10px"}
+                        fontFamily={"AlexRegular"}
+                      />
+                    )
+                  )}
                 </View>
               </View>
             </View>
@@ -227,10 +241,7 @@ export default function AboutMovieScreen({ navigation }: Navigation) {
                 Overview
               </Text>
               <Text className="text-[12px] font-AlexExtraLight text-white">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex...
+                {details?.overview}
               </Text>
             </View>
 
@@ -242,17 +253,15 @@ export default function AboutMovieScreen({ navigation }: Navigation) {
               </Text>
 
               <View className="flex-row flex-wrap  ">
-                {Array(5)
-                  .fill(null)
-                  .map((_, index) => (
-                    <View
-                      key={index}
-                      // style={{ width: cardWidth }}
-                      className="pb-5 pr-1"
-                    >
-                      <CastCard index={index} />
-                    </View>
-                  ))}
+                {credits?.cast.slice(0, 6).map((item: CastItem) => (
+                  <View
+                    key={item?.id}
+                    // style={{ width: cardWidth }}
+                    className="pb-5 pr-4 w-[50%]"
+                  >
+                    <CastCard item={item} index={item?.id} />
+                  </View>
+                ))}
               </View>
             </View>
           </View>
@@ -260,10 +269,10 @@ export default function AboutMovieScreen({ navigation }: Navigation) {
           {/* Similar Movies */}
 
           <View>
-            <Text className="text-[16px] font-AlexMedium  text-white px-[25px] pb-2">
+            <Text className="text-[16px] font-AlexMedium  text-white px-[25px] pb-3">
               Similar Movies
             </Text>
-            <SimilarMovieCard />
+            <SimilarMovieCard movieId={params?.itemId} />
           </View>
         </View>
       </ScrollView>

@@ -2,6 +2,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
+import { ImageApiUrl } from "../../utils/ImageApiUrl";
 
 export default function MasonryMovieList({ item, index }) {
   const navigation = useNavigation();
@@ -11,14 +12,18 @@ export default function MasonryMovieList({ item, index }) {
 
   return (
     <TouchableOpacity
-     onPress={()=> console.log( navigation.navigate('AboutMovieScreen', { itemId: item.id }))}
+      onPress={() =>
+        console.log(
+          navigation.navigate("AboutMovieScreen", { itemId: item.id })
+        )
+      }
     >
       <Animated.View
         entering={FadeInDown.delay(index < 6 ? index * 80 : 0)}
         className={`pl-${!even ? 2 : 0}  pr-${even ? 2 : 0} pb-[30px] `}
       >
         <Image
-          source={{ uri: item.image }}
+          source={{ uri: ImageApiUrl(item?.poster_path) }}
           resizeMode="stretch"
           style={{
             width: "auto",
@@ -30,7 +35,9 @@ export default function MasonryMovieList({ item, index }) {
 
         <Text className="text-white text-[15px] font-AlexBold py-[5px] text-left pl-2 ">
           {item.title}&nbsp;
-          <Text className=" font-AlexRegular">(2020)</Text>
+          <Text className=" font-AlexRegular">
+            ({item?.release_date?.split("-")[0] ??  item?.first_air_date?.split("-")[0] })
+          </Text>
         </Text>
       </Animated.View>
     </TouchableOpacity>

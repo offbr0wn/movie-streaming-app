@@ -9,6 +9,7 @@ export function ClearButton({
   style,
   fontSize,
   fontFamily,
+
   ...props
 }: ClearButtonProps) {
   return (

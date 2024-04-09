@@ -2,11 +2,19 @@ import { View, Text, Image, Dimensions } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import TouchableScale from "react-native-touchable-scale";
+import { ImageApiUrl } from "../utils/ImageApiUrl";
+import { Cast } from "../types/interface";
 
-export default function CastCard({ index }: { index: number }) {
+export default function CastCard({
+  item,
+  index,
+}: {
+  item: Cast[];
+  index: number;
+}) {
   return (
     <TouchableScale
-      onPress={() => console.log("Pressed!", index)}
+      onPress={() => console.log("Pressed!", item)}
       friction={90} //
       tension={200} // These props are passed to the parent component (here TouchableScale)
       activeScale={0.9}
@@ -28,13 +36,13 @@ export default function CastCard({ index }: { index: number }) {
         <View className="flex-row items-center space-x-1    pr-[15px]  ">
           <Image
             source={{
-              uri: "https://www.themoviedb.org/t/p/w1280/lr3cYNDlJcpT1EWzFH42aSIvkab.jpg",
+              uri: ImageApiUrl(item.profile_path),
             }}
             className="w-[50px] h-[50px] rounded-full overflow-hidden  "
           />
 
           <Text className="text-white font-AlexBold text-[10px]  ">
-            Robert Downey Jr.
+            {item.name}
           </Text>
         </View>
       </LinearGradient>
