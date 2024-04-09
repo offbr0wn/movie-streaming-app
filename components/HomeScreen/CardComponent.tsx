@@ -10,17 +10,22 @@ import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
 import { CardIndex } from "../../types/interface";
 import { ImageApiUrl } from "../../utils/ImageApiUrl";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CardComponent({
   index,
   currentIndex,
   item,
+   
 }: CardIndex) {
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
   const blurLogic = index === currentIndex ? 0 : 10;
+  
+  const navigation = useNavigation();
+  
   return (
-    <TouchableOpacity className="items-center">
+    <TouchableOpacity className="items-center" onPress={() => navigation.navigate('AboutMovieScreen', { itemId: item.id })}>
       <ImageBackground
         source={{
           uri: ImageApiUrl(item.poster_path),
@@ -62,7 +67,7 @@ export default function CardComponent({
       </ImageBackground>
       {index === currentIndex && (
         <Text className="text-white text-[20px] font-AlexRegular tracking-[0.5px] ">
-          {item.original_title}
+          {item.original_title ?? item.original_name}
         </Text>
       )}
     </TouchableOpacity>

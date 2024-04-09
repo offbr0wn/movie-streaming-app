@@ -14,6 +14,8 @@ export interface ClearButtonProps extends ButtonProps {
 }
 
 export interface MovieItem {
+  original_name: string;
+  id: never;
   backdrop_path: string;
 
   original_title: string;
@@ -30,4 +32,25 @@ export interface CardIndex {
   index: number;
   currentIndex: number;
   item: MovieItem;
+}
+
+
+export interface CastItem {
+  id: number;
+  cast: Cast[];
+}
+
+export interface Cast {
+  adult: boolean;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  order: number;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
 }
