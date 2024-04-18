@@ -8,23 +8,23 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SearchBar } from "@rneui/themed";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDebouncedCallback } from "use-debounce";
 import MostSearchedCard from "../../components/SearchPage/MostSearchedCard";
 import SpidermanImage from "../../assets/svg_icons/SpidermanImage";
 import DekuImage from "../../assets/svg_icons/DekuImage";
 import React from "react";
+import { useGetMovieSearchQuery } from "../../redux/api/api";
 
 export default function SearchPage() {
   const [search, setSearch] = useState("");
-
-  const searchResult = useRef();
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const { data, isFetching } = useGetMovieSearchQuery(debouncedSearch);
 
   const debounced = useDebouncedCallback(
-    // function
     (value) => {
-      console.log(value);
+      setDebouncedSearch(value);
     },
 
     1000
@@ -35,12 +35,10 @@ export default function SearchPage() {
   ) => {
     if (event?.nativeEvent?.text) {
       setSearch(event.nativeEvent.text);
-      debounced(search);
+      debounced(event?.nativeEvent?.text);
     }
   };
-  const handleSearch = () => {
-    searchResult;
-  };
+
   return (
     <SafeAreaView className="flex-1 pt-[40px]  bg-gray-800 ">
       <View className=" flex-1  space-y-[10px]">
@@ -69,9 +67,11 @@ export default function SearchPage() {
           />
           <SearchBar
             placeholder="Search for a content..."
+            defaultValue="Hello"
             onChange={handleInputChange}
+            // onChange={(event) => setSearch(event.nativeEvent.text)}
             value={search}
-            showLoading={false}
+            showLoading={isFetching}
             searchIcon={false}
             containerStyle={{
               borderRadius: 24,
@@ -80,13 +80,16 @@ export default function SearchPage() {
         </View>
 
         {/* Movies / TV Shows Image  */}
-        <ScrollView showsVerticalScrollIndicator={false} className="flex-1 pb-[100px]">
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          className="flex-1 pb-[100px]"
+        >
           <View className=" items-start  space-x-[-2px]  pt-[20px]">
             <Text className="text-[20px] text-white font-AlexRegular px-[20px]">
               Catagories
             </Text>
             <View className="flex-row  ">
-              <TouchableOpacity onPress={handleSearch}>
+              <TouchableOpacity>
                 <View>
                   <SpidermanImage />
                   <Text className="absolute top-[30%] right-10  text-white font-AlexRegular">
@@ -107,11 +110,13 @@ export default function SearchPage() {
 
           {/* Most searched section  */}
           <View className="flex-1 px-[20px]  pb-[100px] ">
-            <Text className="text-[20px] text-white font-AlexRegular pb-[10px]">
-              Most Searched
-            </Text>
+            {data?.results?.length === 0 && (
+              <Text className="text-[20px] text-white font-AlexRegular pb-[10px]">
+                Most Searched
+              </Text>
+            )}
 
-            <MostSearchedCard />
+            {data?.results?.length > 0 && <MostSearchedCard data={data} />}
           </View>
         </ScrollView>
       </View>

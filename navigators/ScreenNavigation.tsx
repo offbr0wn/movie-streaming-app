@@ -5,9 +5,32 @@ import HomeScreen from "../pages/screens/HomeScreen";
 import TabNavigation from "./TabNavigation";
 import AboutMovieScreen from "../pages/screens/AboutMovieScreen";
 import LoadingScreen from "../utils/LoadingScreen";
+import {
+  useGetDiscoverQuery,
+  useGetPopularQuery,
+  useGetTrendingQuery,
+} from "../redux/api/api";
+import { RootStateDropDown } from "../types/interface";
+import { useSelector } from "react-redux";
+import { isLoading } from "expo-font";
+import { selectDropDownValue } from "../redux/selectors/dropDownSlice";
+import MovieScreenVideo from "../components/AboutMovieScreen/MovieScreenVideo";
 
 export default function ScreenNavigation() {
   const Stack = createNativeStackNavigator();
+
+  const selectDropDownValues = useSelector(selectDropDownValue);
+
+  const { data: results, isFetching: isLoadingDiscover } =
+    useGetDiscoverQuery(selectDropDownValues);
+  const { data: trending, isFetching: isLoadingTrending } =
+    useGetTrendingQuery(selectDropDownValues);
+  const { data: popular, isFetching: isLoadingPopular } =
+    useGetPopularQuery(selectDropDownValues);
+
+  if (!results?.results) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -19,6 +42,12 @@ export default function ScreenNavigation() {
       <Stack.Screen
         name="AboutMovieScreen"
         component={AboutMovieScreen}
+        options={{ animation: "slide_from_bottom" }}
+      />
+
+      <Stack.Screen
+        name="MovieScreenVideo"
+        component={MovieScreenVideo}
         options={{ animation: "slide_from_bottom" }}
       />
       <Stack.Screen

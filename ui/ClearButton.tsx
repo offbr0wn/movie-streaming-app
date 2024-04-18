@@ -19,13 +19,14 @@ export function ClearButton({
       linearGradientProps={{
         colors: ["rgba(255,255,255,0.2)", "transparent"],
         start: { x: 0, y: 0.5 },
-        end: { x: 0.5, y: 2.5 },
+        end: { x: 1, y: 1.6 },
       }}
       style={{
         ...style,
         opacity: 1,
-        // width: 100,
-        borderRadius: 15,
+        width: 100,
+       
+        borderRadius: 10,
         overflow: "hidden",
         padding: 0,
       }}

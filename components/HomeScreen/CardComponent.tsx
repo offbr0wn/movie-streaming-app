@@ -5,27 +5,31 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
 import { CardIndex } from "../../types/interface";
 import { ImageApiUrl } from "../../utils/ImageApiUrl";
 import { useNavigation } from "@react-navigation/native";
+import AboutMovieScreen from "../../pages/screens/AboutMovieScreen";
 
 export default function CardComponent({
   index,
   currentIndex,
   item,
-   
 }: CardIndex) {
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
   const blurLogic = index === currentIndex ? 0 : 10;
-  
+
   const navigation = useNavigation();
-  
+
+  const AboutMovieScreen = useCallback(() => {
+    navigation.navigate("AboutMovieScreen", { itemId: item.id });
+  }, [navigation]);
+
   return (
-    <TouchableOpacity className="items-center" onPress={() => navigation.navigate('AboutMovieScreen', { itemId: item.id })}>
+    <TouchableOpacity className="items-center" onPress={AboutMovieScreen}>
       <ImageBackground
         source={{
           uri: ImageApiUrl(item.poster_path),
@@ -46,13 +50,13 @@ export default function CardComponent({
       >
         <BlurView
           intensity={100}
+          tint="prominent"
           style={{
             width: 80,
-            height: 45,
+            // height: 45,
             position: "absolute",
-            paddingVertical: 2,
-            left: 20,
-            top: 30,
+
+            margin: 25,
             borderRadius: 20,
             overflow: "hidden",
           }}

@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -12,13 +18,13 @@ import MoviesPage from "../pages/screens/MoviesPage";
 export default function TabNavigation() {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
-
+  const height = Dimensions.get("window").height / 8;
   const styles = StyleSheet.create({
     tabBarStyle: {
       // paddingBottom: 0,
       paddingTop: 5,
       position: "absolute",
-      height: 80,
+      height: height,
       backgroundColor: "none",
       borderTopWidth: 0,
       elevation: 0,
@@ -29,7 +35,6 @@ export default function TabNavigation() {
       // display: "none",
     },
   });
-
   const tabBarIconLogic = ({
     route,
     focused,
@@ -53,7 +58,6 @@ export default function TabNavigation() {
 
     return <Ionicons name={iconName} size={27} color={color} />;
   };
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -84,7 +88,7 @@ export default function TabNavigation() {
           <BlurView
             intensity={100}
             tint="systemThickMaterialDark"
-            style={{ height: "100%", width: "100%" }}
+            style={{ height: height, width: "100%" }}
           />
         ),
       })}

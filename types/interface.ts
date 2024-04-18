@@ -4,6 +4,14 @@ import { ViewStyle } from "react-native";
 
 export interface Navigation {
   navigation: NavigationProp<ParamListBase>;
+  route: {
+    params: {
+      itemId: number;
+      mediaType?: string;
+      section?: string;
+
+    };
+  }
 }
 
 export interface ClearButtonProps extends ButtonProps {
@@ -15,7 +23,7 @@ export interface ClearButtonProps extends ButtonProps {
 
 export interface MovieItem {
   original_name: string;
-  id: never;
+  id: number;
   backdrop_path: string;
 
   original_title: string;
@@ -34,23 +42,40 @@ export interface CardIndex {
   item: MovieItem;
 }
 
-
 export interface CastItem {
   id: number;
   cast: Cast[];
 }
 
 export interface Cast {
+  id: number;
   adult: boolean;
   cast_id: number;
   character: string;
   credit_id: string;
   gender: number;
-  id: number;
+  
   known_for_department: string;
   name: string;
   order: number;
   original_name: string;
   popularity: number;
   profile_path: string;
+}
+
+export interface RootStateDropDown {
+  dropDown: {
+    dropDownValue: string;
+  };
+}
+
+
+export interface DropDownState {
+  dropDown: {
+    dropDownValue: string;
+  };
+}
+
+export interface DropDownInitialState {
+  dropDownValue: string;
 }

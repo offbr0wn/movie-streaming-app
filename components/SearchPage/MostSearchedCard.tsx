@@ -3,79 +3,63 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { BlurView } from "expo-blur";
+import { ImageApiUrl } from "../../utils/ImageApiUrl";
+import { useNavigation } from "@react-navigation/native";
 
 export const MostSearchedCardFlatList = ({
   item,
 }: {
-  item: { image: string; title: string };
-}): JSX.Element => {
+  item: {
+    poster_path: string;
+    original_title: string;
+    id: number;
+    name: string;
+    media_type: string;
+    vote_average: number;
+  };
+}) => {
+  const navigation = useNavigation();
   return (
-    <View>
-      <Image
-        source={{ uri: item.image }}
-        style={{
-          width: 110,
-          height: 140,
-          shadowColor: "white",
-          shadowOffset: { width: 20, height: 0 },
-          shadowOpacity: 0.5,
-          shadowRadius: 10,
-          borderRadius: 20,
-          overflow: "hidden",
-          // marginHorizontal:"auto"
-        }}
-        resizeMode="stretch"
-      />
-      <Text className="text-white font-AlexRegular text-[16px]  text-center pt-[2px] ">
-        {item.title}
-      </Text>
-      <Text className="text-white font-AlexLight text-[14px]  text-center ">
-        5.0
-      </Text>
-    </View>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("AboutMovieScreen", {
+          itemId: item.id,
+          section: "settings",
+          mediaType: item.media_type,
+        })
+      }
+    >
+      <View>
+        <Image
+          source={{ uri: ImageApiUrl(item.poster_path) }}
+          style={{
+            width: 110,
+            height: 140,
+            shadowColor: "white",
+            shadowOffset: { width: 20, height: 0 },
+            shadowOpacity: 0.5,
+            shadowRadius: 10,
+            borderRadius: 20,
+            overflow: "hidden",
+          }}
+          resizeMode="stretch"
+        />
+        <Text className="text-white font-AlexRegular text-[16px] text-center pt-[2px]">
+          {item.original_title ?? item?.name}
+        </Text>
+        <Text className="text-white font-AlexLight text-[14px] text-center">
+          {item?.vote_average > 0 ? item?.vote_average?.toFixed(1) : null}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
-export default function MostSearchedCard() {
-  const DATA = [
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
-      title: "First Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
-
-      title: "Second Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-      title: "First Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
-
-      title: "Second Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-      title: "First Item",
-    },
-  ];
+export default function MostSearchedCard({ data }) {
   return (
     <FlashList
-      data={DATA}
-      renderItem={({ item }) => (
-        <TouchableOpacity>
-          <MostSearchedCardFlatList item={item} />
-        </TouchableOpacity>
-      )}
+      data={data?.results}
+      renderItem={({ item }) => <MostSearchedCardFlatList item={item} />}
       estimatedItemSize={20}
       horizontal={false}
       ItemSeparatorComponent={() => <View style={{ height: 15 }} />}

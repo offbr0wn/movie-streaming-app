@@ -6,7 +6,7 @@ import dropDownSlice from "./dropDownSlice";
 
 export const store = configureStore({
   reducer: {
-    dropDown:dropDownSlice,
+    dropDown: dropDownSlice,
     // Add the generated reducer as a specific top-level slice
     [api.reducerPath]: api.reducer,
   },
@@ -15,7 +15,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       immutableCheck: { warnAfter: 128 },
-      serializableCheck: { warnAfter: 128 },
+      serializableCheck: false,
     }).concat(api.middleware),
 });
 

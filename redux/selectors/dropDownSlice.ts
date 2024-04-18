@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
+import { DropDownInitialState, DropDownState, RootStateDropDown } from "../../types/interface";
 
-interface DropDownState {
-  dropDownValue: string;
-}
 
-const initialState: DropDownState = {
+const initialState: DropDownInitialState = {
   dropDownValue: "movie",
 };
 
@@ -20,6 +19,10 @@ export const dropDownSlice = createSlice({
 
 export const { setDropDownValue } = dropDownSlice.actions;
 export const selectDropDownValue = (state: DropDownState) =>
-  state.dropDownValue;
+  state?.dropDown?.dropDownValue;
+
+// export const selectDropDownValue = useSelector(
+//   (state: RootStateDropDown) => state?.dropDown.dropDownValue
+// );
 
 export default dropDownSlice.reducer;
