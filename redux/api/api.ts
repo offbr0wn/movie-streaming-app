@@ -6,18 +6,18 @@ import { baseQuery } from "./basequery";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: baseQuery,
-  refetchOnFocus: true,
   refetchOnReconnect: true,
+  // refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     getDiscover: builder.query({
       query: (type) =>
-        `/discover/${type}?&language=en-US`,
+        `/discover/${type}`,
     }),
     getTopRated: builder.query({
       query: (type) => `/${type}/top_rated`,
     }),
     getTrending: builder.query({
-      query: (type) => `/trending/${type}/day`,
+      query: (type) => `/trending/${type}/week?&language=en-US`,
     }),
     getPopular: builder.query({
       query: (type) => `/${type}/popular`,
@@ -34,6 +34,9 @@ export const api = createApi({
     getSimilar: builder.query({
       query: ({ type, id }) => `/${type}/${id}/similar?language=en-US&page=1`,
     }),
+    getMovieSearch: builder.query({
+      query: ( query ) => `search/multi?query=${query}&include_adult=false&language=en-US`,
+    })
   }),
 });
 
@@ -48,4 +51,5 @@ export const {
   useGetCreditsQuery,
   useGetTopRatedQuery,
   useGetSimilarQuery,
+  useGetMovieSearchQuery,
 } = api;

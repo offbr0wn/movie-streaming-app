@@ -5,12 +5,22 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { FlashList } from "@shopify/flash-list";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { FlashList, useBlankAreaTracker } from "@shopify/flash-list";
 import { BlurView } from "expo-blur";
 import { Button } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { ImageApiUrl, ImageApiUrlW100 } from "../../utils/ImageApiUrl";
+import {
+  useNavigation,
+  NavigatorScreenParams,
+  NavigationState,
+} from "@react-navigation/native";
+import { ImageApiUrl, ImageApiUrlBack, ImageApiUrlBackdrop } from "../../utils/ImageApiUrl";
 
 interface NavigationParams {
   screen: string;
@@ -19,25 +29,32 @@ interface NavigationParams {
     otherParam: string;
   };
 }
-export default function HorizontalHomeCard({ data, name }) {
+
+export default function HorizontalHomeCard({
+  data,
+  name,
+}: {
+  data: any;
+  name: string;
+}) {
   const navigation = useNavigation();
   const [isFlashListInUse, setIsFlashListInUse] = useState(false);
   const flashListRef = useRef(null);
-  const navigateParams: NavigationParams = {
-    screen: "Movie/Shows",
-    params: {
-      itemId: 86,
-      otherParam: "anything you want here",
-    },
-  };
-  useEffect(() => {
-    // Check if the FlashList is in use by checking if the ref is not null
+    // You can make a call when to ingest this data. We recommend that you ingest when the list unmounts.
+    const [blankAreaTrackerResult, onBlankArea] = useBlankAreaTracker(flashListRef);
 
+  const MovieAndTvShow = useCallback(
+    () => navigation.navigate("Movie/Shows", { type: name }),
+    [name, navigation]
+  );
+
+  useLayoutEffect(() => {
     setIsFlashListInUse(false);
   }, []);
 
   const handleInitialScroll = () => {
     // console.log("Initial scroll detected");
+    // console.log(blankAreaTrackerResult);
     // Set isFlashListInUse to true when the initial scroll is detected
     setIsFlashListInUse(true);
   };
@@ -48,12 +65,7 @@ export default function HorizontalHomeCard({ data, name }) {
         <Text className="text-white text-[20px] font-AlexSemiBold ">
           {name}
         </Text>
-        <TouchableOpacity
-          onPress={() => {
-            /* 1. Navigate to the Details route with params */
-            navigation.navigate("Movie/Shows", { type: name });
-          }}
-        >
+        <TouchableOpacity onPress={MovieAndTvShow}>
           <Text className="text-[#DD0404] text-[12px] font-AlexRegular ">
             View all
           </Text>
@@ -65,11 +77,11 @@ export default function HorizontalHomeCard({ data, name }) {
 
           flex: 1,
         }}
-        onTouchStart={handleInitialScroll} // Add paddingTop dynamically based on state
+        // onTouchStart={handleInitialScroll} // Add paddingTop dynamically based on state
       >
         <FlashList
           ref={flashListRef}
-          data={data?.results.slice(0, 8)}
+          data={data ? data : []}
           horizontal={true}
           ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
           showsHorizontalScrollIndicator={false}
@@ -89,7 +101,7 @@ export default function HorizontalHomeCard({ data, name }) {
             >
               <View>
                 <ImageBackground
-                  source={{ uri: ImageApiUrlW100(item?.poster_path) }}
+                  source={{ uri: ImageApiUrlBackdrop(item?.poster_path) }}
                   style={{
                     width: 120,
                     height: 200,

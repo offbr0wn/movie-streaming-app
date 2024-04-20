@@ -11,16 +11,17 @@ export default function MasonryMovieList({ item, index }) {
   const cardHard = index % 3 === 0 ? 200 : 250;
 
   return (
-    <TouchableOpacity
-      onPress={() =>
-        console.log(
-          navigation.navigate("AboutMovieScreen", { itemId: item.id })
-        )
-      }
+    <Animated.View
+      entering={FadeInDown.delay(index < 6 ? index * 80 : 0)}
+      className={`pl-${!even ? 2 : 0}  pr-${even ? 2 : 0} pb-[30px] `}
     >
-      <Animated.View
-        entering={FadeInDown.delay(index < 6 ? index * 80 : 0)}
-        className={`pl-${!even ? 2 : 0}  pr-${even ? 2 : 0} pb-[30px] `}
+      <TouchableOpacity
+        // onPress={() =>
+        //   navigation.navigate("AboutMovieScreen", { itemId: item?.id })
+        // }
+        onPress={() => {
+          navigation.navigate("AboutMovieScreen", { itemId: item.id });
+        }}
       >
         <Image
           source={{ uri: ImageApiUrl(item?.poster_path) }}
@@ -36,10 +37,13 @@ export default function MasonryMovieList({ item, index }) {
         <Text className="text-white text-[15px] font-AlexBold py-[5px] text-left pl-2 ">
           {item.title}&nbsp;
           <Text className=" font-AlexRegular">
-            ({item?.release_date?.split("-")[0] ??  item?.first_air_date?.split("-")[0] })
+            (
+            {item?.release_date?.split("-")[0] ??
+              item?.first_air_date?.split("-")[0]}
+            )
           </Text>
         </Text>
-      </Animated.View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Animated.View>
   );
 }

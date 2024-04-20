@@ -6,7 +6,6 @@ import MasonryMovieList from "./MasonryMovieList";
 
 export const FirstRoute = ({topRated}) => {
 
-
   return (
     <View className="flex-1 pt-[20px] ">
       <MasonryFlashList
@@ -15,7 +14,7 @@ export const FirstRoute = ({topRated}) => {
         renderItem={({ item, index }) => (
           <MasonryMovieList item={item} index={index} />
         )}
-        estimatedItemSize={50}
+        estimatedItemSize={10}
         showsVerticalScrollIndicator={false}
       />
     </View>

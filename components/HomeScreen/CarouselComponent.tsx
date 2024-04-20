@@ -4,7 +4,11 @@ import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import CardComponent from "./CardComponent";
 import { MovieItem } from "../../types/interface";
 
-export default function CarouselComponent({ data: dataProp }: { data: MovieItem[] }) {
+export default function CarouselComponent({
+  data: dataProp,
+}: {
+  data: MovieItem[];
+}) {
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
   const ref = React.useRef<ICarouselInstance>(null);
@@ -14,19 +18,18 @@ export default function CarouselComponent({ data: dataProp }: { data: MovieItem[
     <View className="flex-row items-center justify-start pt-[50px]  ">
       <Carousel
         ref={ref as React.RefObject<ICarouselInstance>}
-        
-        // autoPlay={true}
+        windowSize={3}
         width={width}
         height={height / 2.2}
         data={dataProp}
-        scrollAnimationDuration={20}
+        scrollAnimationDuration={1}
         onProgressChange={() => {
           setCurrentIndex(ref.current?.getCurrentIndex() ?? 0);
         }}
         mode="parallax"
         modeConfig={{
           parallaxScrollingScale: 1,
-          parallaxScrollingOffset: 250,
+          parallaxScrollingOffset: 260,
           parallaxAdjacentItemScale: 0.6,
         }}
         withAnimation={{
@@ -35,6 +38,8 @@ export default function CarouselComponent({ data: dataProp }: { data: MovieItem[
             damping: 15,
           },
         }}
+        autoFillData={true}
+        overscrollEnabled={false}
         renderItem={({ index, item }) => (
           <CardComponent
             index={index}
@@ -46,4 +51,3 @@ export default function CarouselComponent({ data: dataProp }: { data: MovieItem[
     </View>
   );
 }
-

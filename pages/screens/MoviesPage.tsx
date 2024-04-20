@@ -7,18 +7,25 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SearchBar } from "@rneui/themed";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { ClearButton } from "../../ui/ClearButton";
 import { useDebouncedCallback } from "use-debounce";
 import { TabView, TabBar } from "react-native-tab-view";
 import { MasonryFlashList } from "@shopify/flash-list";
 import MasonryMovieList from "../../components/MoviesPage/MasonryMovieList";
 import { useNavigation } from "@react-navigation/native";
-import { useGetTopRatedQuery } from "../../redux/api/api";
+import {
+  useGetPopularQuery,
+  useGetTopRatedQuery,
+  useGetTrendingQuery,
+} from "../../redux/api/api";
 import LoadingScreen from "../../utils/LoadingScreen";
 import { FirstRoute } from "../../components/MoviesPage/FirstRoute";
+import { useDispatch } from "react-redux";
+import { setDropDownValue } from "../../redux/selectors/dropDownSlice";
 
 export default function MoviesPage({ navigation, route }) {
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const searchResult = useRef();
   const [index, setIndex] = useState(0);
@@ -26,6 +33,8 @@ export default function MoviesPage({ navigation, route }) {
   const [buttonType, setButtonType] = useState("movie");
   const { params } = route;
   const { data: topRated, isLoading } = useGetTopRatedQuery(buttonType);
+  const { data: trending } = useGetTrendingQuery(buttonType);
+  const { data: popular } = useGetPopularQuery(buttonType);
 
   const [routes] = useState([
     { key: "first", title: "Latest" },
@@ -37,29 +46,44 @@ export default function MoviesPage({ navigation, route }) {
     searchResult.current;
   };
 
-  const debounced = useDebouncedCallback(
-    (value) => {
-      console.log(value);
+  const buttonTypeSet = useCallback(
+    (type: string) => {
+      if (type === "movie") {
+        setButtonType("movie");
+        dispatch(setDropDownValue("movie"));
+      } else {
+        setButtonType("tv");
+        dispatch(setDropDownValue("tv"));
+      }
     },
-
-    1000
+    [buttonType]
   );
 
-  const handleInputChange = (
-    event: NativeSyntheticEvent<TextInputChangeEventData> | undefined
-  ) => {
-    if (event?.nativeEvent?.text) {
-      setSearch(event.nativeEvent.text);
-      debounced(event?.nativeEvent?.text);
-    }
-  };
+  // const debounced = useDebouncedCallback(
+  //   (value) => {
+  //     console.log(value);
+  //   },
 
-  const renderScene = ({ route }) => {
+  //   1000
+  // );
+
+  // const handleInputChange = (
+  //   event: NativeSyntheticEvent<TextInputChangeEventData> | undefined
+  // ) => {
+  //   if (event?.nativeEvent?.text) {
+  //     setSearch(event.nativeEvent.text);
+  //     debounced(event?.nativeEvent?.text);
+  //   }
+  // };
+
+  const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
       case "first":
         return <FirstRoute topRated={topRated} />;
       case "second":
-        return console.log("second");
+        return <FirstRoute topRated={trending} />;
+      case "third":
+        return <FirstRoute topRated={popular} />;
     }
   };
 
@@ -77,20 +101,20 @@ export default function MoviesPage({ navigation, route }) {
         <View className="flex-row  ">
           <ClearButton
             name="Movies"
-            fontSize={"12"}
+            fontSize={"10"}
             fontFamily={"AlexBold"}
-            onPress={() => setButtonType("movie")}
+            onPress={() => buttonTypeSet("movie")}
           />
           <View style={{ width: 20 }} />
           <ClearButton
             name="Tv Series"
-            fontSize={"12"}
+            fontSize={"10"}
             fontFamily={"AlexBold"}
-            onPress={() => setButtonType("tv")}
+            onPress={() => buttonTypeSet("tv")}
           />
         </View>
         {/* Search Bar */}
-        <View className="w-full ">
+        {/* <View className="w-full ">
           <SearchBar
             placeholder="Type Here..."
             onChange={handleInputChange}
@@ -111,11 +135,11 @@ export default function MoviesPage({ navigation, route }) {
               height: 20,
             }}
           />
-        </View>
+        </View> */}
         {/* Tabs to switch between movies and tv */}
         <View className=" flex-1">
           <TabView
-            lazy
+            lazyPreloadDistance={10}
             // animationEnabled  = {false}
             swipeEnabled={false}
             navigationState={{ index, routes }}
