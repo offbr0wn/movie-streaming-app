@@ -4,8 +4,6 @@ import { FlashList } from "@shopify/flash-list";
 import { BlurView } from "expo-blur";
 import { useGetSimilarQuery } from "../redux/api/api";
 import { ImageApiUrl } from "../utils/ImageApiUrl";
-import LoadingScreen from "../utils/LoadingScreen";
-import { Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { RootStateDropDown } from "../types/interface";
@@ -30,15 +28,16 @@ export default function SimilarMovieCard({
     data: similarMovies,
     isLoading,
     isFetching,
+    isSuccess,
   } = useGetSimilarQuery({
     type: params?.section ? params?.mediaType : selectDropDownValue,
     id: movieId,
   });
 
-  const width = 150;
-  const height = 200;
+  const width = 100;
+  const height = 150;
   return (
-    !isLoading && (
+    isSuccess && (
       <View className="flex-row  w-full h-full ">
         <FlashList
           //   ref={flashListRef}
@@ -47,7 +46,7 @@ export default function SimilarMovieCard({
           ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
           showsHorizontalScrollIndicator={false}
           estimatedItemSize={10}
-          estimatedListSize={{ width: width + 10, height: height + 10 }}
+          estimatedListSize={{ width: width, height: height }}
           renderItem={({
             item,
           }: {

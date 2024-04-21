@@ -14,6 +14,7 @@ export default function CastCard({
 }) {
   return (
     <TouchableScale
+      className="pb-5 pr-4 w-[50%]"
       onPress={() => console.log("Pressed!", item)}
       friction={90} //
       tension={200} // These props are passed to the parent component (here TouchableScale)
