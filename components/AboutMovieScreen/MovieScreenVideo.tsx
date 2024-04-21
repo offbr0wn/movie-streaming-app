@@ -14,16 +14,19 @@ export default function MovieScreenVideo({
   type: string;
   itemId: number;
 }) {
-  // const videoRef = useRef(null);
-  // const background = require('./background.mp4');
+
   const height = Dimensions.get("window").height;
-  console.log(type)
   return (
     <SafeAreaView
       className="items-center absolute top-0 z-50 flex-row  w-full"
-      style={{ height: height /2 }}
+      style={{ height: height / 2 }}
     >
-      <WebView source={{ uri: `${VIDSCR_ENDPOINT}/${type}?tmdb=${itemId}` }} />
+      <WebView
+        source={{ uri: `${VIDSCR_ENDPOINT}/${type}?tmdb=${itemId}` }}
+        webviewProps={{
+          referrerpolicy: "origin",
+        }}
+      />
     </SafeAreaView>
   );
 }

@@ -43,7 +43,6 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
   const IMG_HEIGHT = height / 1.6;
   const moment = require("moment");
   const { params } = route;
-  const [cacheData, setCacheData] = useState({});
   const [buttonPressed, setButtonPressed] = useState(false);
   const selectDropDownValue = useSelector(
     (state: RootStateDropDown) => state?.dropDown?.dropDownValue
@@ -62,14 +61,6 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
   useLayoutEffect(() => {
     setButtonPressed(!buttonPressed);
   }, []);
-
-  useEffect(() => {
-    setCacheData({
-      ...cacheData,
-      details,
-      credits,
-    });
-  }, [details, credits]);
 
   const goBackButton = useCallback(() => navigation.goBack(), [navigation]);
 
@@ -103,8 +94,7 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
       {buttonPressed && (
         <SafeAreaView
           className={
-            "absolute z-[50]  flex-row items-center justify-between    " +
-            topMargin
+            "absolute z-[50]  flex-row items-center justify-between" + topMargin
           }
         >
           <TouchableOpacity className="rounded-xl p-5">
@@ -177,7 +167,10 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
 
         {/* Video Player View */}
         {!buttonPressed && (
-          <MovieScreenVideo type={params?.mediaType ?? selectDropDownValue} itemId={params?.itemId} />
+          <MovieScreenVideo
+            type={params?.mediaType ?? selectDropDownValue}
+            itemId={params?.itemId}
+          />
         )}
         {/* Watch Now Button */}
         <View className="absolute bottom-[67%] z-50 self-center">
@@ -225,21 +218,17 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {details?.genres.map(
                       (genre: { id: number; name: string }) => (
-                        <>
-                          <ClearButton
-                            key={genre.id}
-                            name={genre.name}
-                            style={{
-                              borderColor: "rgb(100 116 139)",
-                              borderWidth: 0.5,
-                              borderRadius: 10,
-                              width: "100%",
-                            }}
-                            fontSize={"10px"}
-                            fontFamily={"AlexRegular"}
-                          />
-                          <View className="w-2" />
-                        </>
+                        <ClearButton
+                          key={genre.id}
+                          name={genre.name}
+                          style={{
+                            borderColor: "rgb(100 116 139)",
+                            borderWidth: 0.5,
+                            borderRadius: 10,
+                          }}
+                          fontSize={"10px"}
+                          fontFamily={"AlexRegular"}
+                        />
                       )
                     )}
                   </ScrollView>
@@ -287,13 +276,7 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
 
               <View className="flex-row flex-wrap  ">
                 {credits?.cast.slice(0, 6).map((item: Cast[]) => (
-                  <View
-                    key={item?.id}
-                    // style={{ width: cardWidth }}
-                    className="pb-5 pr-4 w-[50%]"
-                  >
-                    <CastCard item={item} index={item?.id} />
-                  </View>
+                  <CastCard item={item} index={item?.id} />
                 ))}
               </View>
             </View>

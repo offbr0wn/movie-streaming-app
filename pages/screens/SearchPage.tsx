@@ -3,12 +3,13 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Image,
   NativeSyntheticEvent,
   TextInputChangeEventData,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SearchBar } from "@rneui/themed";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDebouncedCallback } from "use-debounce";
 import MostSearchedCard from "../../components/SearchPage/MostSearchedCard";
@@ -21,6 +22,7 @@ export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const { data, isFetching } = useGetMovieSearchQuery(debouncedSearch);
+  const [selectedType, setSelectedType] = useState([]);
 
   const debounced = useDebouncedCallback(
     (value) => {
@@ -39,6 +41,13 @@ export default function SearchPage() {
     }
   };
 
+  const filteredData = useCallback(
+    data?.results?.filter(
+      (item: { media_type: string | string[] }) =>
+        item?.media_type === selectedType
+    ),
+    [selectedType]
+  );
   return (
     <SafeAreaView className="flex-1 pt-[40px]  bg-gray-800 ">
       <View className=" flex-1  space-y-[10px]">
@@ -76,6 +85,7 @@ export default function SearchPage() {
             containerStyle={{
               borderRadius: 24,
             }}
+            onClear={() => setSelectedType([])}
           />
         </View>
 
@@ -89,18 +99,26 @@ export default function SearchPage() {
               Catagories
             </Text>
             <View className="flex-row  ">
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setSelectedType("movie")}>
                 <View>
                   <SpidermanImage />
+                  <Image
+                    source={require("../../assets/images/Movie1.png")}
+                    className=" w-[75%] h-[75%]  top-0 left-0          absolute "
+                  />
                   <Text className="absolute top-[30%] right-10  text-white font-AlexRegular">
                     Movies
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setSelectedType("tv")}>
                 <View className="relative items-center">
                   <DekuImage />
-                  <Text className="absolute top-[30%]   text-white font-AlexRegular">
+                  <Image
+                    source={require("../../assets/images/Anime1.png")}
+                    className=" w-[75%] h-[75%]   right-0         absolute "
+                  />
+                  <Text className="absolute top-[30%]  right-20  text-white font-AlexRegular">
                     TV Shows
                   </Text>
                 </View>
@@ -116,7 +134,11 @@ export default function SearchPage() {
               </Text>
             )}
 
-            {data?.results?.length > 0 && <MostSearchedCard data={data} />}
+            {data?.results?.length > 0 && (
+              <MostSearchedCard
+                data={filteredData?.length > 0 ? filteredData : data?.results}
+              />
+            )}
           </View>
         </ScrollView>
       </View>

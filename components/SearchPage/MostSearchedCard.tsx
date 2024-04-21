@@ -56,9 +56,10 @@ export const MostSearchedCardFlatList = ({
 };
 
 export default function MostSearchedCard({ data }) {
+  console.log(data);
   return (
     <FlashList
-      data={data?.results}
+      data={data}
       renderItem={({ item }) => <MostSearchedCardFlatList item={item} />}
       estimatedItemSize={20}
       horizontal={false}
