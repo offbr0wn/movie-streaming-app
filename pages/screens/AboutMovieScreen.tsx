@@ -276,7 +276,7 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
 
               <View className="flex-row flex-wrap  ">
                 {credits?.cast.slice(0, 6).map((item: Cast[]) => (
-                  <CastCard item={item} index={item?.id} />
+                  <CastCard item={item} index={item?.id} key={item?.id} />
                 ))}
               </View>
             </View>

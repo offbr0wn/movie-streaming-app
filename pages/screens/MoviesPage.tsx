@@ -1,19 +1,10 @@
-import {
-  View,
-  Text,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-  useWindowDimensions,
-} from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SearchBar } from "@rneui/themed";
 import React, { useCallback, useRef, useState } from "react";
 import { ClearButton } from "../../ui/ClearButton";
-import { useDebouncedCallback } from "use-debounce";
 import { TabView, TabBar } from "react-native-tab-view";
 import { MasonryFlashList } from "@shopify/flash-list";
 import MasonryMovieList from "../../components/MoviesPage/MasonryMovieList";
-import { useNavigation } from "@react-navigation/native";
 import {
   useGetPopularQuery,
   useGetTopRatedQuery,
@@ -23,8 +14,15 @@ import LoadingScreen from "../../utils/LoadingScreen";
 import { FirstRoute } from "../../components/MoviesPage/FirstRoute";
 import { useDispatch } from "react-redux";
 import { setDropDownValue } from "../../redux/selectors/dropDownSlice";
+import { Navigation } from "../../types/interface";
 
-export default function MoviesPage({ navigation, route }) {
+export default function MoviesPage({
+  navigation,
+  route,
+}: {
+  navigation: Navigation;
+  route: { params?: number };
+}) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const searchResult = useRef();
@@ -58,23 +56,6 @@ export default function MoviesPage({ navigation, route }) {
     },
     [buttonType]
   );
-
-  // const debounced = useDebouncedCallback(
-  //   (value) => {
-  //     console.log(value);
-  //   },
-
-  //   1000
-  // );
-
-  // const handleInputChange = (
-  //   event: NativeSyntheticEvent<TextInputChangeEventData> | undefined
-  // ) => {
-  //   if (event?.nativeEvent?.text) {
-  //     setSearch(event.nativeEvent.text);
-  //     debounced(event?.nativeEvent?.text);
-  //   }
-  // };
 
   const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
