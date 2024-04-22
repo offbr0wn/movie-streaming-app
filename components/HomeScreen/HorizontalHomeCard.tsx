@@ -1,26 +1,9 @@
-import {
-  View,
-  Text,
-  ImageBackground,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { FlashList, useBlankAreaTracker } from "@shopify/flash-list";
 import { BlurView } from "expo-blur";
-import { Button } from "react-native";
-import {
-  useNavigation,
-  NavigatorScreenParams,
-  NavigationState,
-} from "@react-navigation/native";
-import { ImageApiUrl, ImageApiUrlBack, ImageApiUrlBackdrop } from "../../utils/ImageApiUrl";
+import { useNavigation } from "@react-navigation/native";
+import { ImageApiUrlBackdrop } from "../../utils/ImageApiUrl";
 
 interface NavigationParams {
   screen: string;
@@ -40,8 +23,9 @@ export default function HorizontalHomeCard({
   const navigation = useNavigation();
   const [isFlashListInUse, setIsFlashListInUse] = useState(false);
   const flashListRef = useRef(null);
-    // You can make a call when to ingest this data. We recommend that you ingest when the list unmounts.
-    const [blankAreaTrackerResult, onBlankArea] = useBlankAreaTracker(flashListRef);
+  // You can make a call when to ingest this data. We recommend that you ingest when the list unmounts.
+  const [blankAreaTrackerResult, onBlankArea] =
+    useBlankAreaTracker(flashListRef);
 
   const MovieAndTvShow = useCallback(
     () => navigation.navigate("Movie/Shows", { type: name }),
@@ -53,9 +37,6 @@ export default function HorizontalHomeCard({
   }, []);
 
   const handleInitialScroll = () => {
-    // console.log("Initial scroll detected");
-    // console.log(blankAreaTrackerResult);
-    // Set isFlashListInUse to true when the initial scroll is detected
     setIsFlashListInUse(true);
   };
 
@@ -89,10 +70,6 @@ export default function HorizontalHomeCard({
           estimatedListSize={{ height: 200, width: 120 }}
           renderItem={({ item }) => (
             <TouchableOpacity
-              // onPress={() => {
-              //   console.log(target);
-              // }}
-              // onLayout={handleInitialScroll}
               onPress={() =>
                 navigation.navigate("AboutMovieScreen", {
                   itemId: item.id,

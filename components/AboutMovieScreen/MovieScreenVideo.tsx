@@ -1,12 +1,8 @@
-import { View, Text, Dimensions } from "react-native";
+import { Dimensions } from "react-native";
 import React, { useRef, useState } from "react";
-import { StyleSheet, Button } from "react-native";
 import { WebView } from "react-native-webview";
-import ReactPlayer from "react-player/lazy";
-import Video from "react-native-video";
 import { VIDSCR_ENDPOINT } from "@env";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 export default function MovieScreenVideo({
   type,
   itemId,
@@ -14,8 +10,8 @@ export default function MovieScreenVideo({
   type: string;
   itemId: number;
 }) {
-
   const height = Dimensions.get("window").height;
+
   return (
     <SafeAreaView
       className="items-center absolute top-0 z-50 flex-row  w-full"
@@ -26,6 +22,10 @@ export default function MovieScreenVideo({
         webviewProps={{
           referrerpolicy: "origin",
         }}
+        allowsFullscreenVideo={true}
+        allowsLinkPreviews={true}
+        javaScriptCanOpenWindowsAutomatically={false}
+        nestedScrollEnabled={true}
       />
     </SafeAreaView>
   );

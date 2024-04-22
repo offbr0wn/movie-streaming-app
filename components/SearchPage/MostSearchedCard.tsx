@@ -2,7 +2,6 @@ import { View, Text, ImageBackground, Image } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { FlashList } from "@shopify/flash-list";
-import { BlurView } from "expo-blur";
 import { ImageApiUrl } from "../../utils/ImageApiUrl";
 import { useNavigation } from "@react-navigation/native";
 
@@ -55,8 +54,16 @@ export const MostSearchedCardFlatList = ({
   );
 };
 
-export default function MostSearchedCard({ data }) {
-  console.log(data);
+export const MostSearchedCard: React.FC<{
+  data: Array<{
+    poster_path: string;
+    original_title: string;
+    id: number;
+    name: string;
+    media_type: string;
+    vote_average: number;
+  }>;
+}> = ({ data }) => {
   return (
     <FlashList
       data={data}
@@ -68,4 +75,4 @@ export default function MostSearchedCard({ data }) {
       numColumns={3}
     />
   );
-}
+};

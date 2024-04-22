@@ -1,4 +1,10 @@
-import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import React from "react";
 import { FlashList } from "@shopify/flash-list";
 import { BlurView } from "expo-blur";
@@ -7,6 +13,7 @@ import { ImageApiUrl } from "../utils/ImageApiUrl";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { RootStateDropDown } from "../types/interface";
+import LoadingScreen from "../utils/LoadingScreen";
 
 interface SimilarMovieCardProps {
   movieId: number;
@@ -36,9 +43,17 @@ export default function SimilarMovieCard({
 
   const width = 100;
   const height = 150;
+
+  if (isLoading) {
+    <LoadingScreen />;
+  }
   return (
-    isSuccess && (
-      <View className="flex-row  w-full h-full ">
+    <View
+      className={`flex-row  w-[${
+        Dimensions.get("screen").width
+      }] h-[${height}] `}
+    >
+      {similarMovies?.results && (
         <FlashList
           //   ref={flashListRef}
           data={similarMovies?.results}
@@ -101,7 +116,7 @@ export default function SimilarMovieCard({
             </TouchableOpacity>
           )}
         />
-      </View>
-    )
+      )}
+    </View>
   );
 }

@@ -12,18 +12,17 @@ import { SearchBar } from "@rneui/themed";
 import { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDebouncedCallback } from "use-debounce";
-import MostSearchedCard from "../../components/SearchPage/MostSearchedCard";
 import SpidermanImage from "../../assets/svg_icons/SpidermanImage";
 import DekuImage from "../../assets/svg_icons/DekuImage";
 import React from "react";
 import { useGetMovieSearchQuery } from "../../redux/api/api";
+import { MostSearchedCard } from "../../components/SearchPage/MostSearchedCard";
 
 export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const { data, isFetching } = useGetMovieSearchQuery(debouncedSearch);
-  const [selectedType, setSelectedType] = useState([]);
-
+  const [selectedType, setSelectedType] = useState<Array<string>>([]);
   const debounced = useDebouncedCallback(
     (value) => {
       setDebouncedSearch(value);
@@ -44,10 +43,11 @@ export default function SearchPage() {
   const filteredData = useCallback(
     data?.results?.filter(
       (item: { media_type: string | string[] }) =>
-        item?.media_type === selectedType
+        item?.media_type === selectedType[0]
     ),
     [selectedType]
   );
+
   return (
     <SafeAreaView className="flex-1 pt-[40px]  bg-gray-800 ">
       <View className=" flex-1  space-y-[10px]">
@@ -99,7 +99,7 @@ export default function SearchPage() {
               Catagories
             </Text>
             <View className="flex-row  ">
-              <TouchableOpacity onPress={() => setSelectedType("movie")}>
+              <TouchableOpacity onPress={() => setSelectedType(["movie"])}>
                 <View>
                   <SpidermanImage />
                   <Image
@@ -111,7 +111,7 @@ export default function SearchPage() {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setSelectedType("tv")}>
+              <TouchableOpacity onPress={() => setSelectedType(["tv"])}>
                 <View className="relative items-center">
                   <DekuImage />
                   <Image
