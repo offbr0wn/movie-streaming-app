@@ -28,10 +28,11 @@ import {
 import { useMediaQuery } from "native-base";
 import MediaQuery from "../../utils/MediaQuery";
 import { useFocusEffect } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 //ignore tslint error
 
-function HomeScreen({ navigation, route }: Navigation) {
+function HomeScreen({ navigation }: Navigation) {
   const [items, setItems] = useState([
     { label: "Movies", value: "movie" },
     { label: "TV Show", value: "tv" },
@@ -57,21 +58,32 @@ function HomeScreen({ navigation, route }: Navigation) {
   const { data: popular, isFetching: isLoadingPopular } =
     useGetPopularQuery(selectDropDownValues);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => refetch();
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => refetch();
+  //   }, [])
+  // );
   const navigateToAboutMovieScreen = useCallback(() => {
     navigation.navigate("LoadingScreen");
   }, [navigation]);
 
   return (
-    <SafeAreaView className={`bg-gray-800  flex-1 `}>
-      <View className="flex-1 ">
+    <LinearGradient
+      colors={[
+        "rgba(0, 209, 255, 0.3)",
+        "rgba(135, 91, 229, 0.2)",
+        "rgba(237, 34, 34, 0.25)",
+      ]}
+      start={{ x: 0.4, y: 0 }}
+      end={{ x: 0, y: 0.8 }}
+      locations={[0, 0.6, 1]}
+      className="flex-1 bg-[#15151B]"
+    >
+      <SafeAreaView>
         <ScrollView
           showsVerticalScrollIndicator={false}
           className="space-y-[10px] "
+          scrollEventThrottle={20}
           // scrollEnabled={true}
         >
           {/* Top Header */}
@@ -148,7 +160,7 @@ function HomeScreen({ navigation, route }: Navigation) {
           </View>
           {/* Carousel section */}
           <View className="pb-[70px]">
-            <CarouselComponent data={(results?.results).slice(0, 10)} />
+            <CarouselComponent data={results?.results?.slice(0, 10)} />
             {/* Trending Now Section */}
             <HorizontalHomeCard
               data={trending?.results}
@@ -158,8 +170,8 @@ function HomeScreen({ navigation, route }: Navigation) {
             <HorizontalHomeCard data={popular?.results} name={"Popular"} />
           </View>
         </ScrollView>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 

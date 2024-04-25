@@ -2,9 +2,8 @@ import { View, Text, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useCallback, useRef, useState } from "react";
 import { ClearButton } from "../../ui/ClearButton";
-import { TabView, TabBar } from "react-native-tab-view";
-import { MasonryFlashList } from "@shopify/flash-list";
-import MasonryMovieList from "../../components/MoviesPage/MasonryMovieList";
+import { TabView, TabBar, SceneRendererProps } from "react-native-tab-view";
+
 import {
   useGetPopularQuery,
   useGetTopRatedQuery,
@@ -14,7 +13,8 @@ import LoadingScreen from "../../utils/LoadingScreen";
 import { FirstRoute } from "../../components/MoviesPage/FirstRoute";
 import { useDispatch } from "react-redux";
 import { setDropDownValue } from "../../redux/selectors/dropDownSlice";
-import { Navigation } from "../../types/interface";
+import { Navigation, TabBarProp } from "../../types/interface";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function MoviesPage({
   navigation,
@@ -73,124 +73,60 @@ export default function MoviesPage({
   }
 
   return (
-    <SafeAreaView className=" px-[20px] pt-[30px]   flex-1 bg-gray-800">
-      <View className="flex-1  space-y-[20px] ">
-        <Text className="text-white font-AlexMedium text-[18px]">
-          Find Movies, Tv series, and more..
-        </Text>
-        {/* Transparent Buttons */}
-        <View className="flex-row  ">
-          <ClearButton
-            name="Movies"
-            fontSize={"10"}
-            fontFamily={"AlexBold"}
-            onPress={() => buttonTypeSet("movie")}
-          />
-          <View style={{ width: 20 }} />
-          <ClearButton
-            name="Tv Series"
-            fontSize={"10"}
-            fontFamily={"AlexBold"}
-            onPress={() => buttonTypeSet("tv")}
-          />
+    <LinearGradient
+      colors={[
+        "rgba(0, 209, 255, 0.3)",
+        "rgba(135, 91, 229, 0.2)",
+        "rgba(237, 34, 34, 0.25)",
+      ]}
+      start={{ x: 0.4, y: 0 }}
+      end={{ x: 0, y: 0.8 }}
+      locations={[0, 0.6, 1]}
+      className="flex-1 bg-[#15151B]"
+    >
+      <SafeAreaView className=" px-[20px] pt-[30px]   flex-1 ">
+        <View className="flex-1  space-y-[20px] ">
+          <Text className="text-white font-AlexMedium text-[18px]">
+            Find Movies, Tv series, and more..
+          </Text>
+          {/* Transparent Buttons */}
+          <View className="flex-row  ">
+            <ClearButton
+              name="Movies"
+              fontSize={"10"}
+              fontFamily={"AlexBold"}
+              onPress={() => buttonTypeSet("movie")}
+            />
+            <View style={{ width: 20 }} />
+            <ClearButton
+              name="Tv Series"
+              fontSize={"10"}
+              fontFamily={"AlexBold"}
+              onPress={() => buttonTypeSet("tv")}
+            />
+          </View>
+
+          {/* Tabs to switch between movies and tv */}
+          <View className=" flex-1">
+            <TabView
+              lazyPreloadDistance={10}
+              // animationEnabled  = {false}
+              swipeEnabled={false}
+              navigationState={{ index, routes }}
+              onIndexChange={setIndex}
+              initialLayout={{ width: layout.width }}
+              renderScene={renderScene}
+              sceneContainerStyle={{ backgroundColor: "transparent" }}
+              renderTabBar={renderTabBar}
+            />
+          </View>
         </View>
-        {/* Search Bar */}
-        {/* <View className="w-full ">
-          <SearchBar
-            placeholder="Type Here..."
-            onChange={handleInputChange}
-            value={search}
-            containerStyle={{
-              backgroundColor: "#211F30",
-              borderRadius: 30,
-              borderWidth: 0,
-              borderBottomColor: "transparent",
-              elevation: 10,
-              shadowColor: "white",
-              height: 50,
-            }}
-            inputContainerStyle={{
-              backgroundColor: "#211F30",
-              borderRadius: 30,
-              borderWidth: 0,
-              height: 20,
-            }}
-          />
-        </View> */}
-        {/* Tabs to switch between movies and tv */}
-        <View className=" flex-1">
-          <TabView
-            lazyPreloadDistance={10}
-            // animationEnabled  = {false}
-            swipeEnabled={false}
-            navigationState={{ index, routes }}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}
-            renderScene={renderScene}
-            sceneContainerStyle={{ backgroundColor: "transparent" }}
-            renderTabBar={renderTabBar}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
-const SecondRoute = () => {
-  const DATA = [
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
-      title: "First Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
-
-      title: "Second Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-      title: "First Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/6s5RtBxfHybu2vkg43Cexazf0mt.jpg",
-
-      title: "Second Item",
-    },
-    {
-      image:
-        "https://www.themoviedb.org/t/p/w1280/8hoD5BQuUV9dDecAbiyVIxLjzZ9.jpg",
-
-      title: "First Item",
-    },
-  ];
-
-  return (
-    <MasonryFlashList
-      data={DATA}
-      numColumns={2}
-      renderItem={({ item, index }) => (
-        <MasonryMovieList item={item} index={index} />
-      )}
-      estimatedItemSize={200}
-      // optimizeItemArrangement={true}
-      // overrideItemLayout={(props) => {
-      //   console.log(props);
-      // }}
-      // disableAutoLayout = {true}
-      refreshing={false}
-      showsVerticalScrollIndicator={false}
-    />
-  );
-};
-
-const ThirdRoute = () => <View style={{ flex: 1, backgroundColor: "white" }} />;
-
-const renderTabBar = (props) => (
+const renderTabBar = (props: SceneRendererProps & TabBarProp) => (
   <TabBar
     {...props}
     indicatorStyle={{

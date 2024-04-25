@@ -1,17 +1,29 @@
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { ButtonProps } from "@rneui/themed";
-import { ViewStyle } from "react-native";
+import {
+  PressableAndroidRippleConfig,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
+
+import { Event, Scene } from "react-native-tab-view/lib/typescript/src/types";
+import {
+  NavigationState,
+  Route,
+  TabBarIndicatorProps,
+  TabBarItemProps,
+} from "react-native-tab-view";
 
 export interface Navigation {
   navigation: NavigationProp<ParamListBase>;
-  route: {
+  route?: {
     params: {
       itemId: number;
       mediaType?: string;
       section?: string;
-
     };
-  }
+  };
 }
 
 export interface ClearButtonProps extends ButtonProps {
@@ -54,7 +66,7 @@ export interface Cast {
   character: string;
   credit_id: string;
   gender: number;
-  
+
   known_for_department: string;
   name: string;
   order: number;
@@ -69,7 +81,6 @@ export interface RootStateDropDown {
   };
 }
 
-
 export interface DropDownState {
   dropDown: {
     dropDownValue: string;
@@ -78,4 +89,50 @@ export interface DropDownState {
 
 export interface DropDownInitialState {
   dropDownValue: string;
+}
+
+export interface TabBarProp {
+  navigationState: NavigationState<Route>;
+  scrollEnabled?: boolean | undefined;
+  bounces?: boolean | undefined;
+  activeColor?: string | undefined;
+  inactiveColor?: string | undefined;
+  pressColor?: string | undefined;
+  pressOpacity?: number | undefined;
+  getLabelText?: ((scene: Scene<Route>) => string | undefined) | undefined;
+  getAccessible?: ((scene: Scene<Route>) => boolean | undefined) | undefined;
+  getAccessibilityLabel?:
+    | ((scene: Scene<Route>) => string | undefined)
+    | undefined;
+  getTestID?: ((scene: Scene<Route>) => string | undefined) | undefined;
+  renderLabel?:
+    | ((
+        scene: Scene<Route> & { focused: boolean; color: string }
+      ) => React.ReactNode)
+    | undefined;
+  renderIcon?:
+    | ((
+        scene: Scene<Route> & { focused: boolean; color: string }
+      ) => React.ReactNode)
+    | undefined;
+  renderBadge?: ((scene: Scene<Route>) => React.ReactNode) | undefined;
+  renderIndicator?:
+    | ((props: TabBarIndicatorProps<Route>) => React.ReactNode)
+    | undefined;
+  renderTabBarItem?:
+    | ((
+        props: TabBarItemProps<Route> & { key: string }
+      ) => React.ReactElement<any, string | React.JSXElementConstructor<any>>)
+    | undefined;
+  onTabPress?: ((scene: Scene<Route> & Event) => void) | undefined;
+  onTabLongPress?: ((scene: Scene<Route>) => void) | undefined;
+  tabStyle?: StyleProp<ViewStyle>;
+  indicatorStyle?: StyleProp<ViewStyle>;
+  indicatorContainerStyle?: StyleProp<ViewStyle>;
+  labelStyle?: StyleProp<TextStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
+  gap?: number | undefined;
+  testID?: string | undefined;
+  android_ripple?: PressableAndroidRippleConfig | undefined;
 }
