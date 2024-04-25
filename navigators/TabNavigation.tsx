@@ -21,7 +21,6 @@ export default function TabNavigation() {
   const height = Dimensions.get("window").height / 8;
   const styles = StyleSheet.create({
     tabBarStyle: {
-      // paddingBottom: 0,
       paddingTop: 5,
       position: "absolute",
       height: height,
@@ -32,7 +31,6 @@ export default function TabNavigation() {
       flex: 1,
       zIndex: 99,
       backfaceVisibility: "hidden",
-      // display: "none",
     },
   });
   const tabBarIconLogic = ({
@@ -46,7 +44,7 @@ export default function TabNavigation() {
     color: string;
     size: number;
   }) => {
-    let iconName;
+    let iconName: string;
     if (route.name === "HomeScreen") {
       iconName = !focused ? "home-outline" : "home-sharp";
     } else if (route.name === "SearchPage") {

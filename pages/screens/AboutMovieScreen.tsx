@@ -196,101 +196,116 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
         </View>
 
         {/* Main content */}
-        <View
-          style={{ height: height + 100, flex: 1 }}
-          className="flex-1 bg-gray-800 pt-[20px]  space-y-5"
+        <LinearGradient
+          colors={[
+            "rgba(0, 209, 255, 0.15)",
+            "rgba(135, 91, 229, 0.2)",
+            "rgba(237, 34, 34, 0.25)",
+          ]}
+          start={{ x: 0.6, y: 0 }}
+          end={{ x: 0, y: 0.8 }}
+          locations={[0, 0.5, 1]}
+          className=" bg-[#15151B]"
         >
-          <View className="px-[25px] space-y-5">
-            <View className="flex-row  items-center justify-between space-x-4 ">
-              <View className="text-left space-y-4">
-                <Text className="text-[16px] text-white font-AlexMedium">
-                  Release Date
+          <View
+            style={{ height: height , flex: 1 }}
+            className="flex-1  pt-[20px]  space-y-5"
+          >
+            <View className="px-[25px] space-y-5">
+              <View className="flex-row  items-center justify-between space-x-4 ">
+                <View className="text-left space-y-4">
+                  <Text className="text-[16px] text-white font-AlexMedium">
+                    Release Date
+                  </Text>
+                  <Text className="text-[12px] text-white font-AlexLight">
+                    {moment(details?.release_date).format("dddd, MMM D YYYY")}
+                  </Text>
+                </View>
+                <View className=" space-x-4 flex-1 ">
+                  <Text className="text-[20px] text-white font-AlexRegular">
+                    Genre
+                  </Text>
+                  <View className="flex-row ">
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      {details?.genres.map(
+                        (genre: { id: number; name: string }) => (
+                          <ClearButton
+                            key={genre.id}
+                            name={genre.name}
+                            style={{
+                              borderColor: "rgb(100 116 139)",
+                              borderWidth: 0.5,
+                              borderRadius: 10,
+                            }}
+                            fontSize={"10px"}
+                            fontFamily={"AlexRegular"}
+                          />
+                        )
+                      )}
+                    </ScrollView>
+                  </View>
+                </View>
+              </View>
+
+              {/* Divider */}
+              <View className="opacity-30">
+                <LinearGradient
+                  // Background Linear Gradient
+                  colors={["transparent", "white", "transparent"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                  style={{
+                    height: 10,
+                    zIndex: 100,
+                    opacity: 0.6,
+                  }}
+                >
+                  <Divider
+                    style={{ position: "absolute" }}
+                    insetType="middle"
+                    width={2}
+                  />
+                </LinearGradient>
+              </View>
+
+              {/* Overview */}
+              <View className=" text-left">
+                <Text className="text-[16px] font-AlexMedium  text-white">
+                  Overview
                 </Text>
-                <Text className="text-[12px] text-white font-AlexLight">
-                  {moment(details?.release_date).format("dddd, MMM D YYYY")}
+                <Text className="text-[12px] font-AlexExtraLight text-white">
+                  {details?.overview}
                 </Text>
               </View>
-              <View className=" space-x-4 flex-1 ">
-                <Text className="text-[20px] text-white font-AlexRegular">
-                  Genre
+
+              {/* Cast Card */}
+
+              <View className=" items-start space-y-2">
+                <Text className="text-[16px] font-AlexMedium  text-white">
+                  Cast
                 </Text>
-                <View className="flex-row ">
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {details?.genres.map(
-                      (genre: { id: number; name: string }) => (
-                        <ClearButton
-                          key={genre.id}
-                          name={genre.name}
-                          style={{
-                            borderColor: "rgb(100 116 139)",
-                            borderWidth: 0.5,
-                            borderRadius: 10,
-                          }}
-                          fontSize={"10px"}
-                          fontFamily={"AlexRegular"}
-                        />
-                      )
-                    )}
-                  </ScrollView>
+
+                <View className="flex-row flex-wrap  ">
+                  {credits?.cast.slice(0, 6).map((item: Cast[]) => (
+                    <CastCard item={item} index={item?.id} key={item?.id} />
+                  ))}
                 </View>
               </View>
             </View>
 
-            {/* Divider */}
-            <View className="opacity-30">
-              <LinearGradient
-                // Background Linear Gradient
-                colors={["transparent", "white", "transparent"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-                style={{
-                  height: 10,
-                  zIndex: 100,
-                  opacity: 0.6,
-                }}
-              >
-                <Divider
-                  style={{ position: "absolute" }}
-                  insetType="middle"
-                  width={2}
-                />
-              </LinearGradient>
-            </View>
+            {/* Similar Movies */}
 
-            {/* Overview */}
-            <View className=" text-left">
-              <Text className="text-[16px] font-AlexMedium  text-white">
-                Overview
+            <View>
+              <Text className="text-[16px] font-AlexMedium  text-white px-[25px] pb-3">
+                Similar Movies
               </Text>
-              <Text className="text-[12px] font-AlexExtraLight text-white">
-                {details?.overview}
-              </Text>
-            </View>
-
-            {/* Cast Card */}
-
-            <View className=" items-start space-y-2">
-              <Text className="text-[16px] font-AlexMedium  text-white">
-                Cast
-              </Text>
-
-              <View className="flex-row flex-wrap  ">
-                {credits?.cast.slice(0, 6).map((item: Cast[]) => (
-                  <CastCard item={item} index={item?.id} key={item?.id} />
-                ))}
-              </View>
+              <SimilarMovieCard movieId={params?.itemId} params={params} />
             </View>
           </View>
-
-          {/* Similar Movies */}
-
-          <View>
-            <Text className="text-[16px] font-AlexMedium  text-white px-[25px] pb-3">
-              Similar Movies
-            </Text>
-            <SimilarMovieCard movieId={params?.itemId} params={params} />
-          </View>
-        </View>
+        </LinearGradient>
       </ScrollView>
     </View>
   );

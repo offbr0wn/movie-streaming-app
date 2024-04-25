@@ -49,99 +49,112 @@ export default function SearchPage() {
   );
 
   return (
-    <SafeAreaView className="flex-1 pt-[40px]  bg-gray-800 ">
-      <View className=" flex-1  space-y-[10px]">
-        {/* Main Title */}
-        <Text className="text-[20px]  px-[20px] text-white font-AlexRegular">
-          Search for a content
-        </Text>
-        {/* Search Bar */}
-        <View className="w-full  px-[20px]">
-          <LinearGradient
-            start={{ x: 0, y: 2.5 }}
-            end={{ x: 1, y: 2.5 }}
-            colors={["transparent", "#19A1BE", "#7D4192", "transparent"]}
-            style={{
-              position: "absolute",
-              left: 10,
-              right: 10,
-              top: -3,
+    <LinearGradient
+      colors={[
+        "rgba(0, 209, 255, 0.3)",
+        "rgba(135, 91, 229, 0.2)",
+        "rgba(237, 34, 34, 0.25)",
+      ]}
+      start={{ x: 0.4, y: 0 }}
+      end={{ x: 0, y: 0.8 }}
+      locations={[0, 0.6, 1]}
+      className="flex-1 bg-[#15151B]"
+      // style={{ backgroundColor: "#15151B" }}
+    >
+      <SafeAreaView className="flex-1">
+        <View className=" flex-1  space-y-[10px]">
+          {/* Main Title */}
+          <Text className="text-[20px]  px-[20px] text-white font-AlexRegular ">
+            Search for a content
+          </Text>
+          {/* Search Bar */}
+          <View className="w-full  px-[20px] ">
+            <LinearGradient
+              start={{ x: 0, y: 2.5 }}
+              end={{ x: 1, y: 2.5 }}
+              colors={["transparent", "#19A1BE", "#7D4192", "transparent"]}
+              style={{
+                position: "absolute",
+                left: 10,
+                right: 10,
+                top: -3,
 
-              height: "110%",
-              zIndex: -99,
-              borderRadius: 30,
-              overflow: "hidden",
-              elevation: 100,
-            }}
-          />
-          <SearchBar
-            placeholder="Search for a content..."
-            defaultValue="Hello"
-            onChange={handleInputChange}
-            // onChange={(event) => setSearch(event.nativeEvent.text)}
-            value={search}
-            showLoading={isFetching}
-            searchIcon={false}
-            containerStyle={{
-              borderRadius: 24,
-            }}
-            onClear={() => setSelectedType([])}
-          />
-        </View>
-
-        {/* Movies / TV Shows Image  */}
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          className="flex-1 pb-[100px]"
-        >
-          <View className=" items-start  space-x-[-2px]  pt-[20px]">
-            <Text className="text-[20px] text-white font-AlexRegular px-[20px]">
-              Catagories
-            </Text>
-            <View className="flex-row  ">
-              <TouchableOpacity onPress={() => setSelectedType(["movie"])}>
-                <View>
-                  <SpidermanImage />
-                  <Image
-                    source={require("../../assets/images/Movie1.png")}
-                    className=" w-[75%] h-[75%]  top-0 left-0          absolute "
-                  />
-                  <Text className="absolute top-[30%] right-10  text-white font-AlexRegular">
-                    Movies
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setSelectedType(["tv"])}>
-                <View className="relative items-center">
-                  <DekuImage />
-                  <Image
-                    source={require("../../assets/images/Anime1.png")}
-                    className=" w-[75%] h-[75%]   right-0         absolute "
-                  />
-                  <Text className="absolute top-[30%]  right-20  text-white font-AlexRegular">
-                    TV Shows
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+                height: "110%",
+                zIndex: -99,
+                borderRadius: 30,
+                overflow: "hidden",
+                elevation: 100,
+              }}
+            />
+            <SearchBar
+              placeholder="Search for a content..."
+              defaultValue="Hello"
+              onChange={handleInputChange}
+              // onChange={(event) => setSearch(event.nativeEvent.text)}
+              value={search}
+              showLoading={isFetching}
+              searchIcon={false}
+              containerStyle={{
+                borderRadius: 24,
+              }}
+              onClear={() => setSelectedType([])}
+            />
           </View>
 
-          {/* Most searched section  */}
-          <View className="flex-1 px-[20px]  pb-[100px] ">
-            {data?.results?.length === 0 && (
-              <Text className="text-[20px] text-white font-AlexRegular pb-[10px]">
-                Most Searched
+          {/* Movies / TV Shows Image  */}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            className="flex-1 pb-[100px]"
+          >
+            <View className=" items-start  space-x-[-2px]  pt-[20px]">
+              <Text className="text-[20px] text-white font-AlexRegular px-[20px]">
+                Catagories
               </Text>
-            )}
+              <View className="flex-row  ">
+                <TouchableOpacity onPress={() => setSelectedType(["movie"])}>
+                  <View>
+                    <SpidermanImage />
+                    <Image
+                      source={require("../../assets/images/Movie1.png")}
+                      className=" w-[75%] h-[75%]  top-0 left-0          absolute "
+                    />
+                    <Text className="absolute top-[30%] right-10  text-white font-AlexRegular">
+                      Movies
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setSelectedType(["tv"])}>
+                  <View className="relative items-center">
+                    <DekuImage />
+                    <Image
+                      source={require("../../assets/images/Anime1.png")}
+                      className=" w-[75%] h-[75%]   left-[35%]         absolute "
+                    />
+                    <Text className="absolute top-[30%]  right-20  text-white font-AlexRegular">
+                      TV Shows
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
 
-            {data?.results?.length > 0 && (
-              <MostSearchedCard
-                data={filteredData?.length > 0 ? filteredData : data?.results}
-              />
-            )}
-          </View>
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+            {/* Most searched section  */}
+            <View className="flex-1 px-[20px]  pb-[100px] ">
+              {data?.results?.length === 0 && (
+                <Text className="text-[20px] text-white font-AlexRegular pb-[10px]">
+                  Most Searched
+                </Text>
+              )}
+
+              {data?.results?.length > 0 && (
+                <MostSearchedCard
+                  data={filteredData?.length > 0 ? filteredData : data?.results}
+                />
+              )}
+            </View>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }

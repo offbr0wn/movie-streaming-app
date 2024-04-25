@@ -1,7 +1,5 @@
-import { View, Text } from "react-native";
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "../pages/screens/HomeScreen";
 import TabNavigation from "./TabNavigation";
 import AboutMovieScreen from "../pages/screens/AboutMovieScreen";
 import LoadingScreen from "../utils/LoadingScreen";
@@ -10,9 +8,7 @@ import {
   useGetPopularQuery,
   useGetTrendingQuery,
 } from "../redux/api/api";
-import { RootStateDropDown } from "../types/interface";
 import { useSelector } from "react-redux";
-import { isLoading } from "expo-font";
 import { selectDropDownValue } from "../redux/selectors/dropDownSlice";
 import MovieScreenVideo from "../components/AboutMovieScreen/MovieScreenVideo";
 
@@ -21,14 +17,14 @@ export default function ScreenNavigation() {
 
   const selectDropDownValues = useSelector(selectDropDownValue);
 
-  const { data: results, isFetching: isLoadingDiscover } =
+  const { data: results, isLoading: isLoadingDiscover } =
     useGetDiscoverQuery(selectDropDownValues);
-  const { data: trending, isFetching: isLoadingTrending } =
+  const { data: trending, isLoading: isLoadingTrending } =
     useGetTrendingQuery(selectDropDownValues);
-  const { data: popular, isFetching: isLoadingPopular } =
+  const { data: popular, isLoading: isLoadingPopular } =
     useGetPopularQuery(selectDropDownValues);
 
-  if (!results?.results) {
+  if (isLoadingDiscover && isLoadingTrending && isLoadingPopular) {
     return <LoadingScreen />;
   }
 
@@ -53,7 +49,7 @@ export default function ScreenNavigation() {
       <Stack.Screen
         name="LoadingScreen"
         component={LoadingScreen}
-        options={{ animation: "fade" }}
+        options={{ animation: "fade_from_bottom" }}
       />
     </Stack.Navigator>
   );
