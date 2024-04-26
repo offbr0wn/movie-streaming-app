@@ -23,9 +23,18 @@ export default function MovieScreenVideo({
           referrerpolicy: "origin",
         }}
         allowsFullscreenVideo={true}
-        allowsLinkPreviews={true}
-        javaScriptCanOpenWindowsAutomatically={false}
+        allowsLinkPreviews={false}
         nestedScrollEnabled={true}
+        thirdPartyCookiesEnabled={false}
+        javaScriptCanOpenWindowsAutomatically={true}
+        allowsAirPlayForMediaPlayback={true}
+        scrollEnabled={false}
+        setDisplayZoomControls={true}
+        setBuiltInZoomControls={false}
+        directionalLockEnabled={true}
+        sharedCookiesEnabled={false}
+        originWhitelist={['https://vidsrc.xyz/embed/*',]}
+        
       />
     </SafeAreaView>
   );

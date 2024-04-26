@@ -10,15 +10,15 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SearchPage from "../pages/screens/SearchPage";
 import HomeScreen from "../pages/screens/HomeScreen";
 import MoviesPage from "../pages/screens/MoviesPage";
 
 export default function TabNavigation() {
-  const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
+
   const height = Dimensions.get("window").height / 8;
+
   const styles = StyleSheet.create({
     tabBarStyle: {
       paddingTop: 5,
@@ -62,6 +62,8 @@ export default function TabNavigation() {
         headerShown: false,
         tabBarStyle: styles.tabBarStyle,
         tabBarHideOnKeyboard: true,
+        
+        
 
         tabBarIcon: ({ focused, color, size }) =>
           tabBarIconLogic({ route, focused, color, size }),

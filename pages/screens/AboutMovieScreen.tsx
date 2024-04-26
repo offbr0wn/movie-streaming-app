@@ -48,12 +48,12 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
     (state: RootStateDropDown) => state?.dropDown?.dropDownValue
   );
 
-  const { data: details, isLoading: isLoadingDetails } = useGetDetailsQuery({
+  const { data: details, isFetching: isLoadingDetails } = useGetDetailsQuery({
     type: params?.section ? params?.mediaType : selectDropDownValue,
     id: params?.itemId,
   });
 
-  const { data: credits, isLoading: isLoadingCredits } = useGetCreditsQuery({
+  const { data: credits, isFetching: isLoadingCredits } = useGetCreditsQuery({
     type: params?.section ? params?.mediaType : selectDropDownValue,
     id: params?.itemId,
   });
@@ -64,9 +64,7 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
 
   const goBackButton = useCallback(() => navigation.goBack(), [navigation]);
 
-  if (isLoadingDetails && isLoadingCredits) {
-    <LoadingScreen />;
-  }
+
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -88,6 +86,10 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
     };
   });
 
+
+  if (isLoadingDetails && isLoadingCredits) {
+    <LoadingScreen />;
+  }
   return (
     <View className="flex-1 bg-gray-800">
       {/* Back navigation button */}

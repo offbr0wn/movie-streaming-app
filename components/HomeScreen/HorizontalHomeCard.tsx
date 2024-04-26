@@ -23,9 +23,9 @@ export default function HorizontalHomeCard({
   const navigation = useNavigation();
   const [isFlashListInUse, setIsFlashListInUse] = useState(false);
   const flashListRef = useRef(null);
+  const [paddingLeft, setPaddingLeft] = useState(0);
+
   // You can make a call when to ingest this data. We recommend that you ingest when the list unmounts.
-  const [blankAreaTrackerResult, onBlankArea] =
-    useBlankAreaTracker(flashListRef);
 
   const MovieAndTvShow = useCallback(
     () => navigation.navigate("Movie/Shows", { type: name }),
@@ -33,11 +33,12 @@ export default function HorizontalHomeCard({
   );
 
   useLayoutEffect(() => {
-    setIsFlashListInUse(false);
+    setIsFlashListInUse(flashListRef.current !== null);
+    setPaddingLeft(20);
   }, []);
 
-  const handleInitialScroll = () => {
-    setIsFlashListInUse(true);
+  const handleScroll = () => {
+    setPaddingLeft(isFlashListInUse ? 0 : 20);
   };
 
   return (
@@ -54,20 +55,19 @@ export default function HorizontalHomeCard({
       </View>
       <View
         style={{
-          paddingLeft: isFlashListInUse ? 0 : 20,
-
+          paddingLeft,
           flex: 1,
         }}
-        // onTouchStart={handleInitialScroll} // Add paddingTop dynamically based on state
       >
         <FlashList
           ref={flashListRef}
-          data={data ? data : []}
+          data={data?.slice(0, 10)}
           horizontal={true}
-          ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
+          ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
           showsHorizontalScrollIndicator={false}
-          estimatedItemSize={10}
-          estimatedListSize={{ height: 200, width: 120 }}
+          estimatedItemSize={20}
+          onScroll={handleScroll}
+          estimatedListSize={{ height: 120, width: 200 }}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>

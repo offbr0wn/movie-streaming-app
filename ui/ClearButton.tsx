@@ -24,7 +24,7 @@ export function ClearButton({
       style={{
         ...style,
         opacity: 1,
-        width: "auto",
+        // width: "auto",
        
         borderRadius: 10,
         overflow: "hidden",

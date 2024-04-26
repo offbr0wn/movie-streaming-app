@@ -84,8 +84,8 @@ export default function MoviesPage({
       locations={[0, 0.6, 1]}
       className="flex-1 bg-[#15151B]"
     >
-      <SafeAreaView className=" px-[20px] pt-[30px]   flex-1 ">
-        <View className="flex-1  space-y-[20px] ">
+      <SafeAreaView className=" px-[20px]   flex-1 ">
+        <View className="flex-1  space-y-[20px]  pb-20">
           <Text className="text-white font-AlexMedium text-[18px]">
             Find Movies, Tv series, and more..
           </Text>
@@ -95,12 +95,14 @@ export default function MoviesPage({
               name="Movies"
               fontSize={"10"}
               fontFamily={"AlexBold"}
+              style={{ width: 120 }}
               onPress={() => buttonTypeSet("movie")}
             />
             <View style={{ width: 20 }} />
             <ClearButton
               name="Tv Series"
               fontSize={"10"}
+              style={{ width: 120 }}
               fontFamily={"AlexBold"}
               onPress={() => buttonTypeSet("tv")}
             />
@@ -109,9 +111,10 @@ export default function MoviesPage({
           {/* Tabs to switch between movies and tv */}
           <View className=" flex-1">
             <TabView
+              lazy={true}
               lazyPreloadDistance={10}
               // animationEnabled  = {false}
-              swipeEnabled={false}
+              swipeEnabled={true}
               navigationState={{ index, routes }}
               onIndexChange={setIndex}
               initialLayout={{ width: layout.width }}

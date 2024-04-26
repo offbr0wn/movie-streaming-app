@@ -35,8 +35,8 @@ export default function CardComponent({
           uri: ImageApiUrl(item.poster_path),
         }}
         style={{
-          width: width / 1.7,
-          height: height / 2.7,
+          width: width / 1.8,
+          height: height / 2.8,
           borderRadius: 60,
           overflow: "hidden",
           shadowColor: "white",
@@ -70,7 +70,7 @@ export default function CardComponent({
         </BlurView>
       </ImageBackground>
       {index === currentIndex && (
-        <Text className="text-white text-[20px] font-AlexRegular tracking-[0.5px] ">
+        <Text className="text-white text-[12px] font-AlexRegular tracking-[0.5px] pt-2">
           {item.original_title ?? item.original_name}
         </Text>
       )}
