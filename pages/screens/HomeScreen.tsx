@@ -1,33 +1,25 @@
-import { View, Text, ScrollView, Platform } from "react-native";
-import React, { useCallback, useState } from "react";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { View, Text, ScrollView } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import ClapperBoard from "../../assets/svg_icons/ClapperBoard";
 import { Dropdown } from "react-native-element-dropdown";
 import { ICarouselInstance } from "react-native-reanimated-carousel";
 import HorizontalHomeCard from "../../components/HomeScreen/HorizontalHomeCard";
 import CarouselComponent from "../../components/HomeScreen/CarouselComponent";
-import { Navigation, RootStateDropDown } from "../../types/interface";
+import { Navigation } from "../../types/interface";
 import {
   useGetDiscoverQuery,
-  useGetNowTopAiringQuery,
   useGetPopularQuery,
   useGetTrendingQuery,
 } from "../../redux/api/api";
 import LoadingScreen from "../../utils/LoadingScreen";
-import { ImageApiUrl } from "../../utils/ImageApiUrl";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@reduxjs/toolkit/query";
 import {
   selectDropDownValue,
   setDropDownValue,
 } from "../../redux/selectors/dropDownSlice";
-import { useMediaQuery } from "native-base";
 import MediaQuery from "../../utils/MediaQuery";
-import { useFocusEffect } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
 //ignore tslint error
@@ -38,34 +30,35 @@ function HomeScreen({ navigation }: Navigation) {
     { label: "TV Show", value: "tv" },
   ]);
 
-  // const [dropDownValue, setDropDownValue] = useState("movie");
-  // const {
-  //   data: { results } = [],
-  //   error,
-  //   isLoading,
-  // } = useGetDiscoverMovieQuery("");
   const ref = React.useRef<ICarouselInstance>(null);
-
-  const selectDropDownValues = useSelector(selectDropDownValue);
-  const dispatch = useDispatch();
-  const {
-    data: results,
-    isFetching: isLoadingDiscover,
-    refetch,
-  } = useGetDiscoverQuery(selectDropDownValues);
-  const { data: trending, isFetching: isLoadingTrending } =
-    useGetTrendingQuery(selectDropDownValues);
-  const { data: popular, isFetching: isLoadingPopular } =
-    useGetPopularQuery(selectDropDownValues);
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     return () => refetch();
-  //   }, [])
-  // );
   const navigateToAboutMovieScreen = useCallback(() => {
-    navigation.navigate("LoadingScreen");
+    navigation.navigate("SearchPage");
   }, [navigation]);
+  const dispatch = useDispatch();
+  const selectDropDownValues = useSelector(selectDropDownValue);
+  const {
+    data: discover,
+    isLoading: isLoadingDiscover,
+    refetch: discoverRefetch,
+  } = useGetDiscoverQuery(selectDropDownValues);
+  const {
+    data: trending,
+    isLoading: isLoadingTrending,
+    refetch: trendingRefetch,
+  } = useGetTrendingQuery(selectDropDownValues);
+  const {
+    data: popular,
+    isLoading: isLoadingPopular,
+    refetch: popularRefetch,
+  } = useGetPopularQuery(selectDropDownValues);
+
+  useEffect(() => {
+    return () => {
+      discoverRefetch();
+      trendingRefetch();
+      popularRefetch();
+    };
+  }, []);
 
   return (
     <LinearGradient
@@ -160,7 +153,7 @@ function HomeScreen({ navigation }: Navigation) {
           </View>
           {/* Carousel section */}
           <View className="pb-[70px]">
-            <CarouselComponent data={results?.results?.slice(0, 10)} />
+            <CarouselComponent data={discover?.results} />
             {/* Trending Now Section */}
             <HorizontalHomeCard
               data={trending?.results}

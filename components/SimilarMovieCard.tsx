@@ -31,22 +31,13 @@ export default function SimilarMovieCard({
   const selectDropDownValue = useSelector(
     (state: RootStateDropDown) => state?.dropDown?.dropDownValue
   );
-  const {
-    data: similarMovies,
-    isLoading,
-    isFetching,
-    isSuccess,
-  } = useGetSimilarQuery({
+  const { data: similarMovies } = useGetSimilarQuery({
     type: params?.section ? params?.mediaType : selectDropDownValue,
     id: movieId,
   });
 
   const width = 100;
   const height = 150;
-
-  if (isLoading) {
-    <LoadingScreen />;
-  }
   return (
     <View
       className={`flex-row  w-[${
@@ -56,12 +47,12 @@ export default function SimilarMovieCard({
       {similarMovies?.results && (
         <FlashList
           //   ref={flashListRef}
-          data={similarMovies?.results}
+          data={similarMovies.results ? similarMovies?.results : []}
           horizontal={true}
-          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
           showsHorizontalScrollIndicator={false}
           estimatedItemSize={10}
-          estimatedListSize={{ width: width, height: height }}
+          estimatedListSize={{ width: width +10, height: height +10}}
           renderItem={({
             item,
           }: {

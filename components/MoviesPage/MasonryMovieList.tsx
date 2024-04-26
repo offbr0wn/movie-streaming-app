@@ -8,12 +8,12 @@ export default function MasonryMovieList({ item, index }) {
   const navigation = useNavigation();
 
   const even = index % 2 === 0;
-  const cardHard = index % 3 === 0 ? 200 : 250;
+  const cardHard = index % 3 === 0 ? 180 : 250;
 
   return (
     <Animated.View
-      entering={FadeInDown.delay(index < 6 ? index * 80 : 0)}
-      className={`pl-${!even ? 2 : 0}  pr-${even ? 2 : 0} pb-[30px] `}
+      entering={FadeInDown.delay(index < 6 ? index * 40 : 0)}
+      className={`pl-${!even ? 2 : 0}  pr-${even ? 2 : 0} pb-5 `}
     >
       <TouchableOpacity
         // onPress={() =>
@@ -34,7 +34,7 @@ export default function MasonryMovieList({ item, index }) {
           }}
         />
 
-        <Text className="text-white text-[15px] font-AlexBold py-[5px] text-left pl-2 ">
+        <Text className="text-white text-[12px] font-AlexBold py-[5px] text-left pl-2 ">
           {item.title}&nbsp;
           <Text className=" font-AlexRegular">
             (

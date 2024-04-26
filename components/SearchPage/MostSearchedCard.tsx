@@ -43,10 +43,10 @@ export const MostSearchedCardFlatList = ({
           }}
           resizeMode="stretch"
         />
-        <Text className="text-white font-AlexRegular text-[16px] text-center pt-[2px]">
+        <Text className="text-white font-AlexRegular text-[12px] text-center pt-2">
           {item.original_title ?? item?.name}
         </Text>
-        <Text className="text-white font-AlexLight text-[14px] text-center">
+        <Text className="text-white font-AlexRegular text-[14px] text-center">
           {item?.vote_average > 0 ? item?.vote_average?.toFixed(1) : null}
         </Text>
       </View>

@@ -2,8 +2,8 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function Rating({rating}) {
-  const ratingOfStart = (rating?.toFixed(1))/2; // Example rating
+export default function Rating({ rating }: { rating: number }): JSX.Element {
+  const ratingOfStart = parseFloat(rating?.toFixed(1)) / 2; // Example rating
   const stars = Array(5).fill("star-outline");
 
   for (let i = 0; i < Math.floor(ratingOfStart); i++) {

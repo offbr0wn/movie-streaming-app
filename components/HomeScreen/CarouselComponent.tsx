@@ -18,11 +18,13 @@ export default function CarouselComponent({
     <View className="flex-row items-center justify-start pt-[50px]  ">
       <Carousel
         ref={ref as React.RefObject<ICarouselInstance>}
-        windowSize={3}
+        windowSize={1}
         width={width}
+        snapEnabled={true}
         height={height / 2.2}
         data={dataProp}
-        scrollAnimationDuration={1}
+        scrollAnimationDuration={0.2}
+
         onProgressChange={() => {
           setCurrentIndex(ref.current?.getCurrentIndex() ?? 0);
         }}
@@ -35,7 +37,7 @@ export default function CarouselComponent({
         withAnimation={{
           type: "spring",
           config: {
-            damping: 15,
+            damping: 20,
           },
         }}
         autoFillData={true}
