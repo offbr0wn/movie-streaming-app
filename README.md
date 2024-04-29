@@ -62,7 +62,7 @@ expo start
 ## Screenshots
 #### Figma Final Design  
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://github.com/offbr0wn/movie-streaming-app/blob/7d5988f8d2451355d426dd2f8803d5c72aaab241/assets/images/Group%20338.jpg)
 
 #### Final App Apperance  
 
