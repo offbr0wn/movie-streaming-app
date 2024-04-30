@@ -136,3 +136,11 @@ export interface TabBarProp {
   testID?: string | undefined;
   android_ripple?: PressableAndroidRippleConfig | undefined;
 }
+
+export interface MasonryMovieListProp {
+  poster_path: string;
+  title: string;
+  original_name?: string;
+  release_date?: string;
+  first_air_date?: string;
+}

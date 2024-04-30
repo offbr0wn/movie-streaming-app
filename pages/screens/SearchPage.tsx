@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SearchBar } from "@rneui/themed";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDebouncedCallback } from "use-debounce";
 import SpidermanImage from "../../assets/svg_icons/SpidermanImage";
@@ -17,19 +17,21 @@ import DekuImage from "../../assets/svg_icons/DekuImage";
 import React from "react";
 import { useGetMovieSearchQuery } from "../../redux/api/api";
 import { MostSearchedCard } from "../../components/SearchPage/MostSearchedCard";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ClearButton } from "../../ui/ClearButton";
+const SEARCH_HISTORY_KEY = "searchHistory";
 
 export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const { data, isFetching } = useGetMovieSearchQuery(debouncedSearch);
   const [selectedType, setSelectedType] = useState<Array<string>>([]);
-  const debounced = useDebouncedCallback(
-    (value) => {
-      setDebouncedSearch(value);
-    },
+  const [searchHistory, setSearchHistory] = useState<Array<string>>([]);
 
-    1000
-  );
+  const debounced = useDebouncedCallback((value) => {
+    setDebouncedSearch(value);
+    // addToSearchHistory();
+  }, 1000);
 
   const handleInputChange = (
     event: NativeSyntheticEvent<TextInputChangeEventData> | undefined
@@ -48,6 +50,49 @@ export default function SearchPage() {
     [selectedType]
   );
 
+  const addToSearchHistory = async () => {
+    // Create a new search history array with the new term added
+    const newSearchHistory = [data?.results, ...searchHistory];
+
+    // Update the state variable with the new search history
+    setSearchHistory(newSearchHistory);
+
+    // Save the search history to AsyncStorage
+    try {
+      await AsyncStorage.setItem(
+        SEARCH_HISTORY_KEY,
+        JSON.stringify(newSearchHistory)
+      );
+    } catch (error) {
+      console.error("Error saving search history:", error);
+    }
+  };
+
+  const readSearchHistory = async () => {
+    try {
+      const history = await AsyncStorage.getItem(SEARCH_HISTORY_KEY);
+      if (history !== null) {
+        const parsedHistory = JSON.parse(history);
+        setSearchHistory(parsedHistory);
+      }
+    } catch (error) {
+      console.error("Error loading search history:", error);
+    }
+  };
+
+  const removeSearchHistory = async () => {
+    try {
+      await AsyncStorage.removeItem(SEARCH_HISTORY_KEY);
+      setSearchHistory([]);
+    } catch (error) {
+      console.error("Error removing search history:", error);
+    }
+  };
+
+  useEffect(() => {
+    readSearchHistory();
+  }, []);
+
   return (
     <LinearGradient
       colors={[
@@ -61,7 +106,7 @@ export default function SearchPage() {
       className="flex-1 bg-[#15151B]"
       // style={{ backgroundColor: "#15151B" }}
     >
-      <SafeAreaView className="flex-1">
+      <SafeAreaView className="flex-1 mt-[2%]">
         <View className=" flex-1  space-y-[10px]">
           {/* Main Title */}
           <Text className="text-[20px]  px-[20px] text-white font-AlexRegular ">
@@ -97,7 +142,24 @@ export default function SearchPage() {
               containerStyle={{
                 borderRadius: 24,
               }}
-              onClear={() => setSelectedType([])}
+              onClear={() => {
+                setSelectedType([]);
+                setDebouncedSearch("");
+              }}
+              onChangeText={addToSearchHistory}
+            />
+          </View>
+          <View className="w-full  px-[20px] ">
+            <ClearButton
+              name={"Clear History"}
+              style={{
+                borderColor: "rgb(100 116 139)",
+                borderWidth: 0.5,
+                borderRadius: 10,
+              }}
+              fontSize={"12 px"}
+              fontFamily={"AlexRegular"}
+              onPress={removeSearchHistory}
             />
           </View>
 
@@ -145,6 +207,13 @@ export default function SearchPage() {
                   Most Searched
                 </Text>
               )}
+
+              {data?.results?.length === 0 &&
+                searchHistory.flat()?.length > 0 && (
+                  <MostSearchedCard
+                    data={searchHistory?.flat()?.slice(0, 40)}
+                  />
+                )}
 
               {data?.results?.length > 0 && (
                 <MostSearchedCard

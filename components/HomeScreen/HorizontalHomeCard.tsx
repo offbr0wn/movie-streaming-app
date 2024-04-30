@@ -29,7 +29,7 @@ export default function HorizontalHomeCard({
 
   const MovieAndTvShow = useCallback(
     () => navigation.navigate("Movie/Shows", { type: name }),
-    [name, navigation]
+    [navigation]
   );
 
   useLayoutEffect(() => {
@@ -61,14 +61,24 @@ export default function HorizontalHomeCard({
       >
         <FlashList
           ref={flashListRef}
-          data={data?.slice(0, 10)}
+          data={data?.slice(0, 15)}
           horizontal={true}
-          ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
+          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
           showsHorizontalScrollIndicator={false}
           estimatedItemSize={20}
           onScroll={handleScroll}
-          estimatedListSize={{ height: 120, width: 200 }}
-          renderItem={({ item }) => (
+          estimatedListSize={{ height: 100, width: 200 }}
+          renderItem={({
+            item,
+          }: {
+            item: {
+              title?: string;
+              id: number;
+              poster_path: string;
+              name: string;
+              media_type: string;
+            };
+          }) => (
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate("AboutMovieScreen", {

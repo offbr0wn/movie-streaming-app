@@ -25,10 +25,11 @@ export function ClearButton({
         ...style,
         opacity: 1,
         // width: "auto",
-       
+
         borderRadius: 10,
         overflow: "hidden",
         padding: 0,
+        marginRight: 5,
       }}
       type="clear"
     >
