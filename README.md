@@ -66,7 +66,7 @@ expo start
 
 #### Final App Apperance  
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://github.com/offbr0wn/movie-streaming-app/blob/bcc0391c2e4707f9c1b5fa04f3af69723ff7ed8b/assets/images/MainImage.png)
 
 
 ## You can find me on:
