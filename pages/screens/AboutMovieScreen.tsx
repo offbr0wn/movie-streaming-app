@@ -64,7 +64,6 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
 
   const goBackButton = useCallback(() => navigation.goBack(), [navigation]);
 
-
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -85,7 +84,6 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
       ],
     };
   });
-
 
   if (isLoadingDetails && isLoadingCredits) {
     <LoadingScreen />;
@@ -114,6 +112,7 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
         ref={scrollRef}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
+        className="flex-1"
       >
         {/* Background Image */}
 
@@ -175,7 +174,7 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
           />
         )}
         {/* Watch Now Button */}
-        <View className="absolute bottom-[67%] z-50 self-center">
+        <View className="absolute bottom-[65%] z-50 self-center">
           <Button
             onPress={() => setButtonPressed(!buttonPressed)}
             ViewComponent={LinearGradient} // Don't forget this!
@@ -191,7 +190,7 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
               width: 250,
             }}
           >
-            <Text className="text-white font-AlexBold font-[16px] p-1">
+            <Text className="text-white font-AlexBold font-[20px] p-1">
               Watch Now
             </Text>
           </Button>
@@ -210,8 +209,8 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
           className=" bg-[#15151B]"
         >
           <View
-            style={{ height: height , flex: 1 }}
-            className="flex-1  pt-[20px]  space-y-5"
+            style={{ height: height, flex: 1 }}
+            className="flex-1  pt-[20px]  space-y-5  "
           >
             <View className="px-[25px] space-y-5">
               <View className="flex-row  items-center justify-between space-x-4 ">
@@ -231,6 +230,10 @@ export default function AboutMovieScreen({ navigation, route }: Navigation) {
                     <ScrollView
                       horizontal
                       showsHorizontalScrollIndicator={false}
+                      contentContainerStyle={{
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                      }}
                     >
                       {details?.genres.map(
                         (genre: { id: number; name: string }) => (

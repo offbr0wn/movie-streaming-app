@@ -15,7 +15,7 @@ export default function CarouselComponent({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <View className="flex-row items-center justify-start pt-[50px]  ">
+    <View className="flex-row items-center justify-start pt-[5%] mb-[-5%] ">
       <Carousel
         ref={ref as React.RefObject<ICarouselInstance>}
         windowSize={1}
@@ -23,7 +23,7 @@ export default function CarouselComponent({
         snapEnabled={true}
         height={height / 2.2}
         data={dataProp}
-        scrollAnimationDuration={0.2}
+        scrollAnimationDuration={0.5}
 
         onProgressChange={() => {
           setCurrentIndex(ref.current?.getCurrentIndex() ?? 0);
@@ -37,7 +37,7 @@ export default function CarouselComponent({
         withAnimation={{
           type: "spring",
           config: {
-            damping: 20,
+            damping: 15,
           },
         }}
         autoFillData={true}

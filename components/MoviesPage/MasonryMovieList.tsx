@@ -1,10 +1,17 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
 import { ImageApiUrl } from "../../utils/ImageApiUrl";
+import { MasonryMovieListProp } from "../../types/interface";
 
-export default function MasonryMovieList({ item, index }) {
+export const MasonryMovieList = ({
+  item,
+  index,
+}: {
+  item: MasonryMovieListProp;
+  index: number;
+}) => {
   const navigation = useNavigation();
 
   const even = index % 2 === 0;
@@ -16,9 +23,6 @@ export default function MasonryMovieList({ item, index }) {
       className={`pl-${!even ? 2 : 0}  pr-${even ? 2 : 0} pb-5 `}
     >
       <TouchableOpacity
-        // onPress={() =>
-        //   navigation.navigate("AboutMovieScreen", { itemId: item?.id })
-        // }
         onPress={() => {
           navigation.navigate("AboutMovieScreen", { itemId: item.id });
         }}
@@ -35,7 +39,7 @@ export default function MasonryMovieList({ item, index }) {
         />
 
         <Text className="text-white text-[12px] font-AlexBold py-[5px] text-left pl-2 ">
-          {item.title}&nbsp;
+          {item.title ?? item.original_name}&nbsp;
           <Text className=" font-AlexRegular">
             (
             {item?.release_date?.split("-")[0] ??
@@ -46,4 +50,4 @@ export default function MasonryMovieList({ item, index }) {
       </TouchableOpacity>
     </Animated.View>
   );
-}
+};

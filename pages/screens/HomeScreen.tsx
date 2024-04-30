@@ -1,5 +1,5 @@
 import { View, Text, ScrollView } from "react-native";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import ClapperBoard from "../../assets/svg_icons/ClapperBoard";
@@ -36,29 +36,11 @@ function HomeScreen({ navigation }: Navigation) {
   }, [navigation]);
   const dispatch = useDispatch();
   const selectDropDownValues = useSelector(selectDropDownValue);
-  const {
-    data: discover,
-    isLoading: isLoadingDiscover,
-    refetch: discoverRefetch,
-  } = useGetDiscoverQuery(selectDropDownValues);
-  const {
-    data: trending,
-    isLoading: isLoadingTrending,
-    refetch: trendingRefetch,
-  } = useGetTrendingQuery(selectDropDownValues);
-  const {
-    data: popular,
-    isLoading: isLoadingPopular,
-    refetch: popularRefetch,
-  } = useGetPopularQuery(selectDropDownValues);
-
-  useEffect(() => {
-    return () => {
-      discoverRefetch();
-      trendingRefetch();
-      popularRefetch();
-    };
-  }, []);
+  const { data: discover, isLoading: isLoadingDiscover } =
+    useGetDiscoverQuery(selectDropDownValues);
+  const { data: trending, isLoading: isLoadingTrending } =
+    useGetTrendingQuery(selectDropDownValues);
+  const { data: popular, isLoading } = useGetPopularQuery(selectDropDownValues);
 
   return (
     <LinearGradient
@@ -72,11 +54,11 @@ function HomeScreen({ navigation }: Navigation) {
       locations={[0, 0.6, 1]}
       className="flex-1 bg-[#15151B]"
     >
-      <SafeAreaView>
+      <SafeAreaView className="flex-1 mt-[2%]">
         <ScrollView
           showsVerticalScrollIndicator={false}
           className="space-y-[10px] "
-          scrollEventThrottle={20}
+          scrollEventThrottle={10}
           // scrollEnabled={true}
         >
           {/* Top Header */}
@@ -94,7 +76,7 @@ function HomeScreen({ navigation }: Navigation) {
               >
                 What would you like to see today?
               </Text>
-              <View className=" absolute left-[68%] top-[30px]">
+              <View className=" absolute left-[65%] top-[25%]">
                 <Dropdown
                   style={{
                     height: "auto",
@@ -102,6 +84,7 @@ function HomeScreen({ navigation }: Navigation) {
                     borderBottomWidth: 4,
                     paddingVertical: 5,
                     width: 108,
+                    marginTop: 10,
                   }}
                   containerStyle={{
                     backgroundColor: "white",
@@ -152,7 +135,7 @@ function HomeScreen({ navigation }: Navigation) {
             />
           </View>
           {/* Carousel section */}
-          <View className="pb-[70px]">
+          <View className="mb-[20%] ">
             <CarouselComponent data={discover?.results} />
             {/* Trending Now Section */}
             <HorizontalHomeCard

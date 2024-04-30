@@ -18,6 +18,7 @@ export const MostSearchedCardFlatList = ({
   };
 }) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       onPress={() =>

@@ -1,6 +1,6 @@
 import { View, Text, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ClearButton } from "../../ui/ClearButton";
 import { TabView, TabBar, SceneRendererProps } from "react-native-tab-view";
 
@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setDropDownValue } from "../../redux/selectors/dropDownSlice";
 import { Navigation, TabBarProp } from "../../types/interface";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function MoviesPage({
   navigation,
@@ -24,12 +25,9 @@ export default function MoviesPage({
   route: { params?: number };
 }) {
   const dispatch = useDispatch();
-  const [search, setSearch] = useState("");
-  const searchResult = useRef();
   const [index, setIndex] = useState(0);
   const layout = useWindowDimensions();
   const [buttonType, setButtonType] = useState("movie");
-  const { params } = route;
   const { data: topRated, isLoading } = useGetTopRatedQuery(buttonType);
   const { data: trending } = useGetTrendingQuery(buttonType);
   const { data: popular } = useGetPopularQuery(buttonType);
@@ -39,10 +37,9 @@ export default function MoviesPage({
     { key: "second", title: "Trending" },
     { key: "third", title: "Popular" },
   ]);
-
-  const handleSearch = () => {
-    searchResult.current;
-  };
+  const navigateToAboutMovieScreen = useCallback(() => {
+    navigation.navigate("SearchPage");
+  }, [navigation]);
 
   const buttonTypeSet = useCallback(
     (type: string) => {
@@ -84,28 +81,38 @@ export default function MoviesPage({
       locations={[0, 0.6, 1]}
       className="flex-1 bg-[#15151B]"
     >
-      <SafeAreaView className=" px-[20px]   flex-1 ">
+      <SafeAreaView className=" px-[20px]   flex-1 mt-[2%]">
         <View className="flex-1  space-y-[20px]  pb-20">
           <Text className="text-white font-AlexMedium text-[18px]">
             Find Movies, Tv series, and more..
           </Text>
           {/* Transparent Buttons */}
-          <View className="flex-row  ">
-            <ClearButton
-              name="Movies"
-              fontSize={"10"}
-              fontFamily={"AlexBold"}
-              style={{ width: 120 }}
-              onPress={() => buttonTypeSet("movie")}
-            />
-            <View style={{ width: 20 }} />
-            <ClearButton
-              name="Tv Series"
-              fontSize={"10"}
-              style={{ width: 120 }}
-              fontFamily={"AlexBold"}
-              onPress={() => buttonTypeSet("tv")}
-            />
+          <View className="flex-row  items-center justify-between ">
+            <View className="flex-row">
+              <ClearButton
+                name="Movies"
+                fontSize={"10"}
+                fontFamily={"AlexBold"}
+                style={{ width: 120 }}
+                onPress={() => buttonTypeSet("movie")}
+              />
+              <View style={{ width: 20 }} />
+              <ClearButton
+                name="Tv Series"
+                fontSize={"10"}
+                style={{ width: 120 }}
+                fontFamily={"AlexBold"}
+                onPress={() => buttonTypeSet("tv")}
+              />
+            </View>
+            <View>
+              <Ionicons
+                name="search"
+                size={22}
+                color="white"
+                onPress={navigateToAboutMovieScreen}
+              />
+            </View>
           </View>
 
           {/* Tabs to switch between movies and tv */}

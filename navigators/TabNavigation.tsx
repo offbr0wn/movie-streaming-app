@@ -17,7 +17,7 @@ import MoviesPage from "../pages/screens/MoviesPage";
 export default function TabNavigation() {
   const Tab = createBottomTabNavigator();
 
-  const height = Dimensions.get("window").height / 8;
+  const height = Dimensions.get("window").height / 8.5;
 
   const styles = StyleSheet.create({
     tabBarStyle: {
@@ -62,8 +62,6 @@ export default function TabNavigation() {
         headerShown: false,
         tabBarStyle: styles.tabBarStyle,
         tabBarHideOnKeyboard: true,
-        
-        
 
         tabBarIcon: ({ focused, color, size }) =>
           tabBarIconLogic({ route, focused, color, size }),
@@ -82,7 +80,7 @@ export default function TabNavigation() {
 
         tabBarLabelStyle: { display: "none" },
 
-        tabBarActiveTintColor: "#DD0404",
+        tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "white",
         tabBarBackground: () => (
           <BlurView
