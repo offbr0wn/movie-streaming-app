@@ -3,7 +3,7 @@
 
 A movie and tv show application created in react native with expo, where you can enjoy a wide range of TV shows and movies on your mobile device. With our app, you can easily discover new titles, browse through our extensive library, and watch your favorite shows and movies on the go.
 
-![Video Showcase](https://github.com/offbr0wn/movie-streaming-app/blob/686b1b50a7f41da59d8547a264e981a2ceadf533/assets/video/Showcase%20Video.webm)
+![Showcase](https://github.com/offbr0wn/movie-streaming-app/blob/2800f60e966edf8c8c5e992d3e68e8bbdd4c7bd2/assets/images/Group%20339.png)
 ## Features
 
 - Discover new conten browse through our selection of movies and TV shows.
